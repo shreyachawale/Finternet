@@ -1,8 +1,11 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException,Request
 from pydantic import BaseModel
 import json
 import os
+import time
+import requests
 from threading import Lock
+from web3 import Web3
 
 from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,6 +15,17 @@ from fastapi.middleware.cors import CORSMiddleware
 BASE_DIR = Path(__file__).resolve().parent.parent
 WALLET_FILE = BASE_DIR / "src" / "data" / "wallet.json"
 PLATFORM_CUT = 0.20
+
+# --- Finternet Wallet Configuration ---
+API_KEY = os.getenv("FINTERNET_API_KEY", "sk_hackathon_4b9d9e226412ab814b6ed1eed70ef3df")
+BASE_URL = "https://api.fmm.finternetlab.io/api/v1"
+WALLET_DB_FILE = BASE_DIR / "backend" / "wallet_db.json"
+MERCHANT_ADDRESS = "0x742d35Cc6634C0532925a3b844Bc9e7595f42318"
+
+FINTERNET_HEADERS = {
+    "X-API-KEY": API_KEY,
+    "Content-Type": "application/json"
+}
 
 app = FastAPI(title="Demo Wallet System")
 app.add_middleware(
@@ -23,6 +37,75 @@ app.add_middleware(
 
 # Simple in-process lock (demo only)
 file_lock = Lock()
+
+# --- Finternet Wallet Database Functions ---
+def load_wallet_db():
+    if not os.path.exists(WALLET_DB_FILE):
+        return {"balance": 0.00, "transactions": []}
+    try:
+        with open(WALLET_DB_FILE, 'r') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, ValueError):
+        return {"balance": 0.00, "transactions": []}
+
+def save_wallet_db(data):
+    WALLET_DB_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(WALLET_DB_FILE, 'w') as f:
+        json.dump(data, f, indent=4)
+
+def add_wallet_transaction(type, amount, status="PENDING", intent_id=None):
+    db = load_wallet_db()
+    tx = {
+        "id": intent_id if intent_id else f"tx_{int(time.time())}",
+        "type": type,
+        "amount": float(amount),
+        "status": status,
+        "date": time.strftime("%Y-%m-%d %H:%M:%S")
+    }
+    db["transactions"].insert(0, tx)
+    save_wallet_db(db)
+    return db
+
+def auto_claim_pending_deposits():
+    """Checks PENDING deposits, attempts to submit proof, and updates DB."""
+    db = load_wallet_db()
+    updated = False
+    
+    for tx in db["transactions"]:
+        if tx["type"] == "DEPOSIT" and tx["status"] == "PENDING":
+            try:
+                # 1. Generate Proof
+                delivery_data = { "intentId": tx['id'], "timestamp": time.time(), "note": "Auto-claim" }
+                proof_hash = Web3.keccak(text=json.dumps(delivery_data)).hex()
+
+                payload = {
+                    "proofHash": proof_hash,
+                    "proofURI": "https://myapp.com/proofs/" + tx['id'],
+                    "submittedBy": MERCHANT_ADDRESS
+                }
+                
+                # 2. Submit to Finternet
+                url = f"{BASE_URL}/payment-intents/{tx['id']}/escrow/delivery-proof"
+                res = requests.post(url, headers=FINTERNET_HEADERS, json=payload)
+                
+                # 3. Check Success (Either proof accepted OR already delivered)
+                if res.ok or "invalid_status" in res.text: 
+                    check_res = requests.get(f"{BASE_URL}/payment-intents/{tx['id']}", headers=FINTERNET_HEADERS)
+                    if check_res.ok:
+                        remote_status = check_res.json().get('data', {}).get('status')
+                        valid_states = ["SUCCEEDED", "COMPLETED", "AWAITING_SETTLEMENT", "DELIVERED", "PROCESSING"]
+                        
+                        if remote_status in valid_states:
+                            tx["status"] = "COMPLETED"
+                            db["balance"] += tx["amount"]
+                            updated = True
+                            
+            except Exception as e:
+                print(f"Auto-claim error for {tx['id']}: {e}")
+
+    if updated:
+        save_wallet_db(db)
+    return db
 
 
 # ---------- Models ----------
@@ -410,7 +493,7 @@ client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=OPENROUTER_API_KEY,
 )
-
+#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
 # Hardcoded for testing (Feel free to change this)
 HARDCODED_YT_LINK = "https://www.youtube.com/watch?v=mkZsaDA2JnA"
 
@@ -521,18 +604,212 @@ async def ask_ai_stream(query: ChatQuery):
     return StreamingResponse(event_generator(), media_type="text/plain")
 
 
-    model = YOLO("yolov8n-pose.pt")
+# --- YOLO Model (for face detection) ---
+model = YOLO("yolov8n-pose.pt")
+
+# --- Finternet Wallet API Endpoints ---
+
+class DepositRequest(BaseModel):
+    amount: float
+
+class WithdrawRequest(BaseModel):
+    amount: float
+    bankAccount: str
+
+class SpendRequest(BaseModel):
+    amount: float
+
+@app.get("/api/wallet-sync")
+async def wallet_sync():
+    """Sync wallet state - checks pending deposits and updates balance."""
+    data = auto_claim_pending_deposits()
+    return data
+
+@app.post("/api/wallet/deposit")
+async def wallet_deposit(req: DepositRequest):
+    """Create a deposit payment intent."""
+    try:
+        amount = req.amount
+        
+        payload = {
+            "amount": str(amount),
+            "currency": "USDC",
+            "type": "DELIVERY_VS_PAYMENT",
+            "settlementMethod": "OFF_RAMP_MOCK",
+            "settlementDestination": "bank_account_123",
+            "deliveryPeriod": 2592000,
+            "autoRelease": True,
+            "metadata": { "releaseType": "TIME_LOCKED", "timeLockUntil": "1735689600" }
+        }
+        
+        response = requests.post(f"{BASE_URL}/payment-intents", headers=FINTERNET_HEADERS, json=payload)
+        response.raise_for_status()
+        api_data = response.json()
+        
+        payment_url = api_data.get('data', {}).get('paymentUrl')
+        intent_id = api_data.get('data', {}).get('id')
+
+        add_wallet_transaction("DEPOSIT", amount, "PENDING", intent_id)
+
+        return {"paymentUrl": payment_url, "intentId": intent_id}
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/api/wallet/withdraw")
+async def wallet_withdraw(req: WithdrawRequest):
+    """Withdraw funds to bank account."""
+    try:
+        amount = float(req.amount)
+        bank_account = req.bankAccount
+        
+        db = load_wallet_db()
+        
+        # Check if user has enough funds
+        if db["balance"] < amount:
+            raise HTTPException(status_code=400, detail="Insufficient wallet balance")
+        
+        # Record the transaction
+        tx = {
+            "id": f"wd_{int(time.time())}", 
+            "type": "WITHDRAW", 
+            "amount": amount, 
+            "status": "COMPLETED", 
+            "date": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "details": f"To Bank: {bank_account}"
+        }
+        
+        # Deduct Balance
+        db["balance"] -= amount
+        db["transactions"].insert(0, tx)
+        save_wallet_db(db)
+        
+        return {"success": True}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/api/wallet/spend")
+async def wallet_spend(req: SpendRequest):
+    """Spend money (e.g., pay for a session)."""
+    try:
+        amount = float(req.amount)
+        db = load_wallet_db()
+        
+        if db["balance"] < amount:
+            raise HTTPException(status_code=400, detail="Insufficient funds")
+        
+        tx = {
+            "id": f"tx_{int(time.time())}", 
+            "type": "SPEND", 
+            "amount": amount, 
+            "status": "COMPLETED", 
+            "date": time.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        db["balance"] -= amount
+        db["transactions"].insert(0, tx)
+        save_wallet_db(db)
+        
+        return {"success": True}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+BAD_FRAME_THRESHOLD = 7        # ~6–7 seconds
+RECOVERY_THRESHOLD = 2         # need 2 focused frames to recover
+COOLDOWN_SEC = 10              # no repeat warning for 10 sec
+CONFIDENCE_THRESHOLD = 0.6
+import time
+# -------- STATE --------
+bad_frames = 0
+good_frames = 0
+last_alert_ts = 0
+stable_status = "NO_FACE"
 
 @app.post("/face")
-async def analyze(file: UploadFile = File(...)):
-    img_bytes = await file.read()
-    img = cv2.imdecode(np.frombuffer(img_bytes, np.uint8), cv2.IMREAD_COLOR)
+async def face(request: Request):
+    global bad_frames, good_frames, last_alert_ts, stable_status
+
+    body = await request.body()
+    now = time.time()
+
+    if not body:
+        stable_status = "NO_FACE"
+        return {"status": stable_status}
+
+    img = cv2.imdecode(np.frombuffer(body, np.uint8), cv2.IMREAD_COLOR)
+    if img is None:
+        stable_status = "NO_FACE"
+        return {"status": stable_status}
 
     results = model(img, verbose=False)
 
-    status = "NO PERSON"
-    for r in results:
-        if r.keypoints is not None and len(r.keypoints.data) > 0:
-            status = "FOCUSED"  # reuse your gaze logic here
+    frame_status = "NO_FACE"
 
-    return {"status": status}
+    for r in results:
+        if (
+            r.keypoints is not None
+            and len(r.keypoints.data) > 0
+            and float(r.keypoints.conf[0]) > CONFIDENCE_THRESHOLD
+        ):
+            kpts = r.keypoints.data[0].cpu().numpy()
+
+            def get_focus_status(keypoints):
+                if keypoints.shape[0] < 3:
+                    return None
+
+                nose = keypoints[0][:2]
+                left_eye = keypoints[1][:2]
+                right_eye = keypoints[2][:2]
+
+                if (
+                    keypoints[0][2] < 0.5
+                    or keypoints[1][2] < 0.5
+                    or keypoints[2][2] < 0.5
+                ):
+                    return None
+
+                eye_center_x = (left_eye[0] + right_eye[0]) / 2
+                eye_width = abs(right_eye[0] - left_eye[0])
+                if eye_width == 0:
+                    return 0
+
+                return (nose[0] - eye_center_x) / eye_width
+
+            gaze = get_focus_status(kpts)
+
+            if gaze is not None and -0.20 < gaze < 0.20:
+                frame_status = "FOCUSED"
+            else:
+                frame_status = "LOOKING_AWAY"
+
+    # -------- SMOOTHING LOGIC --------
+    if frame_status == "FOCUSED":
+        good_frames += 1
+        bad_frames = max(0, bad_frames - 1)
+
+        if good_frames >= RECOVERY_THRESHOLD:
+            stable_status = "FOCUSED"
+
+        return {"status": stable_status}
+
+    if frame_status == "LOOKING_AWAY":
+        bad_frames += 1
+        good_frames = 0
+
+        if (
+            bad_frames >= BAD_FRAME_THRESHOLD
+            and now - last_alert_ts > COOLDOWN_SEC
+        ):
+            last_alert_ts = now
+            stable_status = "LOOKING_AWAY"
+            return {"status": "LOOKING_AWAY"}
+
+        return {"status": stable_status}
+
+    stable_status = "NO_FACE"
+    return {"status": stable_status}

@@ -347,5 +347,1013 @@
                 "Rating (4★) inconsistent with sentiment (-0.5423)."
             ]
         }
+    },
+    {
+        "timestamp": "2026-02-04T17:51:48.150378",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:51:51.305318",
+        "input": {
+            "review_text": "o",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:00.268676",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:03.717037",
+        "input": {
+            "review_text": "ni",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:29.026827",
+        "input": {
+            "review_text": "niccccdeeeee",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:34.967151",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:39.590523",
+        "input": {
+            "review_text": "ni",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:41.668439",
+        "input": {
+            "review_text": "niceeeeeeeee",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:44.893534",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:45.673538",
+        "input": {
+            "review_text": "b",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:46.661355",
+        "input": {
+            "review_text": "bad",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": -0.5423,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:48.403387",
+        "input": {
+            "review_text": "badieeeeeee",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:52:58.491348",
+        "input": {
+            "review_text": "badieeeeee",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:01.459742",
+        "input": {
+            "review_text": "bad",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": -0.5423,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:08.675813",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:10.057813",
+        "input": {
+            "review_text": "stfu",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:15.654762",
+        "input": {
+            "review_text": "stfu ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:23.575394",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:26.779842",
+        "input": {
+            "review_text": "bqd",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:27.717035",
+        "input": {
+            "review_text": "b",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:28.429326",
+        "input": {
+            "review_text": "ba",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:29.989294",
+        "input": {
+            "review_text": "bad",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": -0.5423,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:31.709015",
+        "input": {
+            "review_text": "bad ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 60,
+            "is_genuine": true,
+            "sentiment_score": -0.5423,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Rating (5★) inconsistent with sentiment (-0.5423)."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:37.928877",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:50.962996",
+        "input": {
+            "review_text": "bvadie",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:52.105211",
+        "input": {
+            "review_text": "b",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:54.946736",
+        "input": {
+            "review_text": "badieeeeeee",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:53:56.557070",
+        "input": {
+            "review_text": "badieeeeeee ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:07.240641",
+        "input": {
+            "review_text": "badieeeeeee",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:09.398999",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:24.206024",
+        "input": {
+            "review_text": "h",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:25.126922",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:27.476093",
+        "input": {
+            "review_text": "no5 ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:28.232015",
+        "input": {
+            "review_text": "no",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": -0.296,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:29.897451",
+        "input": {
+            "review_text": "not tha",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:31.183962",
+        "input": {
+            "review_text": "not that goo",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:31.884297",
+        "input": {
+            "review_text": "not that good",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 60,
+            "is_genuine": true,
+            "sentiment_score": -0.3412,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Rating (5★) inconsistent with sentiment (-0.3412)."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:37.233197",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:40.728476",
+        "input": {
+            "review_text": "ewwwwww",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:42.194191",
+        "input": {
+            "review_text": "ewwwwww ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:49.608838",
+        "input": {
+            "review_text": "ewwwwww course",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:54:50.474110",
+        "input": {
+            "review_text": "ewwwwww course ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:55:00.494890",
+        "input": {
+            "review_text": "eww course ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:55:03.211582",
+        "input": {
+            "review_text": " course ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:55:04.405133",
+        "input": {
+            "review_text": "bad course ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 60,
+            "is_genuine": true,
+            "sentiment_score": -0.5423,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Rating (5★) inconsistent with sentiment (-0.5423)."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:55:16.183874",
+        "input": {
+            "review_text": "course ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T17:55:20.097232",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T18:05:20.581611",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T18:05:23.194874",
+        "input": {
+            "review_text": "4",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T18:48:02.905034",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T18:48:05.447697",
+        "input": {
+            "review_text": "goo",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T18:48:06.132661",
+        "input": {
+            "review_text": "goo\n",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T18:56:13.754449",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T18:56:15.377638",
+        "input": {
+            "review_text": "g",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T18:56:16.030573",
+        "input": {
+            "review_text": "goo",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-04T18:56:16.605991",
+        "input": {
+            "review_text": "goo ",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
     }
 ]

@@ -1,0 +1,27 @@
+{
+    "balance": 230.0,
+    "transactions": [
+        {
+            "id": "wd_1770230794",
+            "type": "WITHDRAW",
+            "amount": 230.0,
+            "status": "COMPLETED",
+            "date": "2026-02-05 00:16:34",
+            "details": "To Bank: 112345678"
+        },
+        {
+            "id": "intent_de377083-8fc4-4601-99c1-519432cb19bc",
+            "type": "DEPOSIT",
+            "amount": 230.0,
+            "status": "COMPLETED",
+            "date": "2026-02-05 00:16:01"
+        },
+        {
+            "id": "intent_86e6a255-1dad-47a9-8ca6-1e7207836451",
+            "type": "DEPOSIT",
+            "amount": 230.0,
+            "status": "COMPLETED",
+            "date": "2026-02-05 00:15:17"
+        }
+    ]
+}

@@ -2,15 +2,15 @@
   "wallets": {
     "id1": {
       "role": "student",
-      "balance": 203.14
+      "balance": 122.98999999999998
     },
     "id2": {
       "role": "teacher",
-      "balance": 170.48999999999998
+      "balance": 234.61
     },
     "id3": {
       "role": "middleman",
-      "balance": 41.370000000000005
+      "balance": 57.400000000000006
     }
   }
 }

@@ -276,6 +276,10 @@ import {
   Target,
   Clock,
   Zap,
+  Plus,
+  Minus,
+  ShoppingCart,
+  X,
 } from 'lucide-react';
 
 interface TeacherDashboardProps {
@@ -293,6 +297,16 @@ interface ReviewItem {
 
 export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) {
   const [averageRating, setAverageRating] = useState<number | null>(null);
+  
+  // ---- WALLET STATE ----
+  const [balance, setBalance] = useState<number>(0);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [loadingBalance, setLoadingBalance] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalAction, setModalAction] = useState<"deposit" | "withdraw" | "spend" | null>(null);
+  const [amount, setAmount] = useState("");
+  const [bankAccount, setBankAccount] = useState("");
+  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:8000/reviews')
@@ -323,6 +337,120 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
       })
       .catch(() => setAverageRating(null));
   }, []);
+
+  // ---- FETCH WALLET ----
+  const fetchWalletData = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/wallet-sync");
+      if (!res.ok) throw new Error("Failed to fetch wallet");
+      const data = await res.json();
+      setBalance(data.balance || 0);
+      setTransactions(data.transactions || []);
+    } catch (err) {
+      console.error("Wallet fetch error:", err);
+    } finally {
+      setLoadingBalance(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWalletData();
+    // Poll every 3 seconds for updates
+    const interval = setInterval(fetchWalletData, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // ---- WALLET ACTIONS ----
+  const handleDeposit = async () => {
+    if (!amount || Number(amount) <= 0) return;
+    setProcessing(true);
+    try {
+      const res = await fetch("http://localhost:8000/api/wallet/deposit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: Number(amount) }),
+      });
+      const data = await res.json();
+      if (data.paymentUrl) {
+        window.open(data.paymentUrl, "_blank");
+        setModalOpen(false);
+        setAmount("");
+        setTimeout(fetchWalletData, 2000);
+      }
+    } catch (err) {
+      console.error("Deposit error:", err);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleWithdraw = async () => {
+    if (!amount || Number(amount) <= 0) return;
+    setProcessing(true);
+    try {
+      const res = await fetch("http://localhost:8000/api/wallet/withdraw", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          amount: Number(amount),
+          bankAccount: bankAccount || "Default Bank"
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setModalOpen(false);
+        setAmount("");
+        setBankAccount("");
+        fetchWalletData();
+      }
+    } catch (err) {
+      console.error("Withdraw error:", err);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleSpend = async () => {
+    if (!amount || Number(amount) <= 0) return;
+    setProcessing(true);
+    try {
+      const res = await fetch("http://localhost:8000/api/wallet/spend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: Number(amount) }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setModalOpen(false);
+        setAmount("");
+        fetchWalletData();
+      }
+    } catch (err) {
+      console.error("Spend error:", err);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const openModal = (action: "deposit" | "withdraw" | "spend") => {
+    setModalAction(action);
+    setModalOpen(true);
+    setAmount("");
+    setBankAccount("");
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalAction(null);
+    setAmount("");
+    setBankAccount("");
+  };
+
+  const handleSubmit = () => {
+    if (modalAction === "deposit") handleDeposit();
+    else if (modalAction === "withdraw") handleWithdraw();
+    else if (modalAction === "spend") handleSpend();
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
@@ -362,8 +490,10 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/60 shadow-lg p-6">
             <DollarSign className="w-8 h-8 text-green-500 mb-3" />
-            <p className="text-3xl font-bold text-gray-800 mb-1">$2,847.50</p>
-            <p className="text-sm text-gray-600">Total Earnings</p>
+            <p className="text-3xl font-bold text-gray-800 mb-1">
+              {loadingBalance ? "Loading..." : `$${balance.toFixed(2)}`}
+            </p>
+            <p className="text-sm text-gray-600">Wallet Balance</p>
           </div>
 
           <div className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/60 shadow-lg p-6">
@@ -393,9 +523,182 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
           </div>
         </div>
 
-        {/* REST OF UI — unchanged */}
-        {/* You can keep the rest exactly as-is */}
+        {/* WALLET SECTION */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+          <div className="lg:col-span-2 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/60 shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
+              <DollarSign className="w-6 h-6 text-green-500" />
+              <span>Wallet</span>
+            </h2>
+
+            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 mb-6 text-white">
+              <p className="text-sm text-green-100 mb-1">Total Balance</p>
+              <p className="text-4xl font-bold">
+                {loadingBalance ? "Loading..." : `$${balance.toFixed(2)}`}
+              </p>
+              <p className="text-sm text-green-100 mt-1">USDC</p>
+            </div>
+
+            <div className="flex gap-3 mb-6">
+              <button
+                onClick={() => openModal("deposit")}
+                className="flex-1 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+              >
+                <Plus className="w-5 h-5" />
+                Add Money
+              </button>
+              <button
+                onClick={() => openModal("withdraw")}
+                className="flex-1 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+              >
+                <Minus className="w-5 h-5" />
+                Withdraw
+              </button>
+              <button
+                onClick={() => openModal("spend")}
+                className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                Spend
+              </button>
+            </div>
+
+            {/* Transaction History */}
+            <div>
+              <h3 className="text-lg font-bold text-gray-800 mb-4">Transaction History</h3>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {transactions.map((tx) => (
+                  <div key={tx.id} className="flex justify-between items-start p-4 bg-gray-50 rounded-xl">
+                    <div>
+                      <p className="font-semibold text-gray-800">{tx.type}</p>
+                      <p className="text-sm text-gray-500">{new Date(tx.date).toLocaleString()}</p>
+                      {tx.details && <p className="text-xs text-gray-400 italic mt-1">{tx.details}</p>}
+                      <p className="text-xs text-gray-400 font-mono mt-1">{tx.id.substring(0, 20)}...</p>
+                    </div>
+                    <div className="text-right">
+                      <p className={`font-bold text-lg ${tx.type === "DEPOSIT" ? "text-green-600" : "text-red-600"}`}>
+                        {tx.type === "DEPOSIT" ? "+" : "-"}${tx.amount.toFixed(2)}
+                      </p>
+                      {tx.status === "PENDING" && (
+                        <p className="text-blue-500 text-xs mt-1 animate-pulse">Verifying...</p>
+                      )}
+                      {tx.status === "COMPLETED" && (
+                        <p className="text-green-500 text-xs mt-1">✓ Completed</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {transactions.length === 0 && (
+                  <p className="text-center text-gray-400 py-8">No transactions yet</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            {/* Quick Stats */}
+            <div className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/60 shadow-lg p-6">
+              <h3 className="font-bold text-gray-800 mb-4">Quick Stats</h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-xs text-gray-500">Total Deposits</p>
+                  <p className="text-xl font-bold text-gray-800">
+                    ${transactions
+                      .filter((t) => t.type === "DEPOSIT" && t.status === "COMPLETED")
+                      .reduce((sum, t) => sum + t.amount, 0)
+                      .toFixed(2)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Total Withdrawals</p>
+                  <p className="text-xl font-bold text-gray-800">
+                    ${transactions
+                      .filter((t) => t.type === "WITHDRAW")
+                      .reduce((sum, t) => sum + t.amount, 0)
+                      .toFixed(2)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Total Spent</p>
+                  <p className="text-xl font-bold text-gray-800">
+                    ${transactions
+                      .filter((t) => t.type === "SPEND")
+                      .reduce((sum, t) => sum + t.amount, 0)
+                      .toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* WALLET MODAL */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-gray-800">
+                {modalAction === "deposit" && "Add Money (USDC)"}
+                {modalAction === "withdraw" && "Withdraw to Bank"}
+                {modalAction === "spend" && "Spend Money"}
+              </h3>
+              <button
+                onClick={closeModal}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {modalAction === "withdraw" && (
+              <input
+                type="text"
+                placeholder="Bank Account Number"
+                value={bankAccount}
+                onChange={(e) => setBankAccount(e.target.value)}
+                className="w-full px-4 py-3 mb-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            )}
+
+            <input
+              type="number"
+              placeholder="Amount (0.00)"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+
+            <div className="flex gap-2">
+              <button
+                onClick={handleSubmit}
+                disabled={processing || !amount || Number(amount) <= 0}
+                className={`flex-1 py-3 rounded-xl font-semibold text-white transition-all ${
+                  modalAction === "deposit"
+                    ? "bg-green-500 hover:bg-green-600"
+                    : modalAction === "withdraw"
+                    ? "bg-purple-500 hover:bg-purple-600"
+                    : "bg-red-500 hover:bg-red-600"
+                } disabled:opacity-50`}
+              >
+                {processing
+                  ? "Processing..."
+                  : modalAction === "deposit"
+                  ? "Proceed to Payment"
+                  : modalAction === "withdraw"
+                  ? "Withdraw Now"
+                  : "Pay Merchant"}
+              </button>
+              <button
+                onClick={closeModal}
+                className="px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl font-semibold transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
