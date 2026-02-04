@@ -197,6 +197,86 @@ export default function RecordedSession({
     setAskingAI(false);
   };
 
+
+
+
+  const camRef = useRef<HTMLVideoElement>(null);
+  const camCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  const [focusStatus, setFocusStatus] = useState<
+    'FOCUSED' | 'LOOKING_AWAY' | 'NO_FACE' | 'INIT'
+  >('INIT');
+
+  const distractionCountRef = useRef(0);
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        if (camRef.current) camRef.current.srcObject = stream;
+      })
+      .catch(console.error);
+
+    return () => {
+      if (camRef.current?.srcObject) {
+        (camRef.current.srcObject as MediaStream)
+          .getTracks()
+          .forEach((t) => t.stop());
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isBilling) return;
+
+    const interval = setInterval(async () => {
+      const video = camRef.current;
+      const canvas = camCanvasRef.current;
+      if (!video || !canvas) return;
+
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(video, 0, 0, 320, 240);
+
+      const blob = await new Promise<Blob | null>((res) =>
+        canvas.toBlob(res, 'image/jpeg', 0.7)
+      );
+
+      if (!blob) return;
+
+      try {
+        const resp = await fetch('http://localhost:8000/face', {
+          method: 'POST',
+          body: blob,
+        });
+
+        const data = await resp.json();
+        setFocusStatus(data.status);
+
+        // --- auto intervention ---
+        if (data.status !== 'FOCUSED') {
+          distractionCountRef.current += 1;
+
+          if (distractionCountRef.current >= 5) {
+            videoRef.current?.pause();
+            setIsBilling(false);
+            alert('⚠️ Please focus on the session');
+            distractionCountRef.current = 0;
+          }
+        } else {
+          distractionCountRef.current = 0;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }, 600);
+
+    return () => clearInterval(interval);
+  }, [isBilling]);
+
+
+
+
+
+
   /* ---------------- END SESSION ---------------- */
   const endSession = async () => {
     try {
@@ -220,10 +300,30 @@ export default function RecordedSession({
     }
   };
 
+  
+
   /* ---------------- UI ---------------- */
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* HEADER */}
+      {/* FACE MONITOR (hidden) */}
+      <video
+        ref={camRef}
+        autoPlay
+        playsInline
+        muted
+        width={320}
+        height={240}
+        className="hidden"
+      />
+
+      <canvas
+        ref={camCanvasRef}
+        width={320}
+        height={240}
+        className="hidden"
+      />
+
       <div className="px-6 py-4 border-b border-gray-700 flex justify-between">
         <div>
           <p className="font-semibold">{session.teacher}</p>
@@ -321,6 +421,22 @@ export default function RecordedSession({
                 </div>
               ))}
           </div>
+          
+          <div className="flex justify-between">
+            <span>Focus</span>
+            <span
+              className={
+                focusStatus === 'FOCUSED'
+                  ? 'text-green-400'
+                  : focusStatus === 'LOOKING_AWAY'
+                  ? 'text-red-400'
+                  : 'text-yellow-400'
+              }
+            >
+              {focusStatus}
+            </span>
+          </div>
+
 
           {/* ASK AI */}
           <div className="bg-gray-800 p-5 rounded-2xl space-y-3">

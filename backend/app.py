@@ -267,7 +267,9 @@ import re
 from fastapi.responses import StreamingResponse
 from youtube_transcript_api import YouTubeTranscriptApi
 from openai import OpenAI  # OpenRouter uses the OpenAI library
-
+from fastapi import FastAPI, UploadFile, File
+import cv2, numpy as np
+from ultralytics import YOLO
 # app = FastAPI()
 
 analyzer = SentimentIntensityAnalyzer()
@@ -517,3 +519,20 @@ async def ask_ai_stream(query: ChatQuery):
                 yield chunk.choices[0].delta.content
 
     return StreamingResponse(event_generator(), media_type="text/plain")
+
+
+    model = YOLO("yolov8n-pose.pt")
+
+@app.post("/face")
+async def analyze(file: UploadFile = File(...)):
+    img_bytes = await file.read()
+    img = cv2.imdecode(np.frombuffer(img_bytes, np.uint8), cv2.IMREAD_COLOR)
+
+    results = model(img, verbose=False)
+
+    status = "NO PERSON"
+    for r in results:
+        if r.keypoints is not None and len(r.keypoints.data) > 0:
+            status = "FOCUSED"  # reuse your gaze logic here
+
+    return {"status": status}

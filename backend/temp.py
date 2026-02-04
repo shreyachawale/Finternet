@@ -1,127 +1,112 @@
+import cv2
+import numpy as np
+import platform
 import os
-import json
-import re
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
-from youtube_transcript_api import YouTubeTranscriptApi
-from openai import OpenAI  # OpenRouter uses the OpenAI library
+from ultralytics import YOLO
 
-app = FastAPI(title="AI YouTube Tutor Pro")
+# ------------------ BEEP FUNCTION ------------------
+def beep():
+    system = platform.system()
 
-# 1. SETUP OPENROUTER
-# Get your key at https://openrouter.ai/keys
-OPENROUTER_API_KEY = "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"
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=OPENROUTER_API_KEY,
-)
+    if system == "Windows":
+        import winsound
+        winsound.Beep(1000, 200)
+    else:
+        # Linux / macOS terminal bell
+        os.system('printf "\a"')
 
-# Hardcoded for testing (Feel free to change this)
-HARDCODED_YT_LINK = "https://www.youtube.com/watch?v=mkZsaDA2JnA"
+# ------------------ LOAD MODEL ------------------
+model = YOLO("yolov8n-pose.pt")
 
-class ChatQuery(BaseModel):
-    user_query: str
-    video_url: str | None = None
-
-def extract_video_id(url: str):
-    video_id_match = re.search(r"(?:v=|\/)([0-9A-Za-z_-]{11}).*", url)
-    return video_id_match.group(1) if video_id_match else None
-
-def resolve_video_id(video_url: str | None):
-    url = video_url if video_url else HARDCODED_YT_LINK
-    video_id = extract_video_id(url)
-    if not video_id:
-        raise HTTPException(status_code=400, detail="Invalid YouTube URL")
-    return video_id
-
-def get_transcript_text(video_id: str):
-    try:
-        api = YouTubeTranscriptApi()
-        # Fetch the transcript (defaults to English)
-        transcript_data = api.list(video_id).find_transcript(['en']).fetch()
-        
-        # Robust parsing: handles both item['text'] and item.text
-        full_text = []
-        for item in transcript_data:
-            # Check if it's an object (newer versions) or a dict (older versions)
-            text = item.text if hasattr(item, 'text') else item['text']
-            start = item.start if hasattr(item, 'start') else item['start']
-            full_text.append(f"[{int(start)}s]: {text}")
-            
-        return " ".join(full_text)
-
-    except Exception as e:
-        print(f"DEBUG ERROR: {str(e)}")
+# ------------------ GAZE / FOCUS LOGIC ------------------
+def get_focus_status(keypoints):
+    """
+    Returns normalized gaze offset:
+    ~0  -> looking forward
+    -ve -> left
+    +ve -> right
+    """
+    if keypoints.shape[0] < 3:
         return None
 
+    nose = keypoints[0][:2]
+    left_eye = keypoints[1][:2]
+    right_eye = keypoints[2][:2]
 
+    # Confidence check
+    if keypoints[0][2] < 0.5 or keypoints[1][2] < 0.5 or keypoints[2][2] < 0.5:
+        return None
 
-@app.get("/get-formatted-transcript")
-async def get_formatted_transcript(video_url: str | None = None):
-    video_id = resolve_video_id(video_url)
+    eye_center_x = (left_eye[0] + right_eye[0]) / 2
+    eye_width = abs(right_eye[0] - left_eye[0])
 
-    try:
-        api = YouTubeTranscriptApi()
-        transcript_data = api.list(video_id).find_transcript(['en']).fetch()
+    if eye_width == 0:
+        return 0
 
-        formatted_list = []
-        for item in transcript_data:
-            raw_start = item.start if hasattr(item, 'start') else item['start']
-            text = item.text if hasattr(item, 'text') else item['text']
+    offset = nose[0] - eye_center_x
+    return offset / eye_width
 
-            minutes = int(raw_start // 60)
-            seconds = int(raw_start % 60)
-            timestamp = f"{minutes}:{seconds:02d}"
+# ------------------ CAMERA ------------------
+cap = cv2.VideoCapture(0)
 
-            formatted_list.append({
-                "timestamp": timestamp,
-                "text": text,
-                "raw_seconds": raw_start
-            })
+if not cap.isOpened():
+    raise RuntimeError("❌ Cannot open webcam")
 
-        return {
-            "video_id": video_id,
-            "transcript": formatted_list
-        }
+print("✅ System Active — Press 'q' to quit")
 
-    except Exception as e:
-        print(f"DEBUG ERROR: {str(e)}")
-        raise HTTPException(status_code=500, detail="Could not format transcript")
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        beep()
+        continue
 
-@app.post("/ask-ai")
-async def ask_ai_stream(query: ChatQuery):
-    video_id = resolve_video_id(query.video_url)
-    transcript = get_transcript_text(video_id)
+    results = model(frame, verbose=False)
 
-    if not transcript:
-        raise HTTPException(status_code=404, detail="Transcript unavailable.")
+    status_text = "⚠️ NO ONE DETECTED"
+    found_person = False
 
-    system_prompt = f"""
-    You are a 'Video Chat-Bit'—a highly intelligent academic assistant.
-    Below is the transcript of a YouTube video (with timestamps).
-    Your task:
-    1. Answer the user's questions ONLY using the video content.
-    2. If the user asks for a summary, provide key takeaways with timestamps.
-    3. If the user's question isn't covered, politely say:
-       "The video doesn't mention that, but based on what it says about [topic]..."
+    for r in results:
+        if r.keypoints is not None and len(r.keypoints.data) > 0:
+            found_person = True
+            kpts = r.keypoints.data[0].cpu().numpy()
+            gaze_ratio = get_focus_status(kpts)
 
-    TRANSCRIPT:
-    {transcript}
-    """
+            if gaze_ratio is not None:
+                if -0.15 < gaze_ratio < 0.15:
+                    status_text = "✅ FOCUSED"
+                    color = (0, 255, 0)
+                else:
+                    status_text = "❌ LOOKING AWAY"
+                    color = (0, 0, 255)
+                    beep()
+            else:
+                status_text = "⚠️ FACE NOT CLEAR"
+                color = (0, 255, 255)
 
-    async def event_generator():
-        response = client.chat.completions.create(
-            model="arcee-ai/trinity-large-preview:free",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": query.user_query}
-            ],
-            stream=True,
-        )
+            # Draw keypoints
+            for x, y, conf in kpts:
+                if conf > 0.5:
+                    cv2.circle(frame, (int(x), int(y)), 3, (255, 0, 0), -1)
 
-        for chunk in response:
-            if chunk.choices[0].delta.content:
-                yield chunk.choices[0].delta.content
+    if not found_person:
+        beep()
+        color = (0, 0, 255)
 
-    return StreamingResponse(event_generator(), media_type="text/plain")
+    # Display status
+    cv2.putText(
+        frame,
+        status_text,
+        (20, 40),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1,
+        color,
+        2,
+    )
+
+    cv2.imshow("Focus Monitor", frame)
+
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
