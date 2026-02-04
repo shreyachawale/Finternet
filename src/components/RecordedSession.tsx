@@ -9,7 +9,7 @@ import {
   X,
 } from 'lucide-react';
 
-import { getWallets, chargeWallet } from '../utils/wallet';
+import { getUserWallet, chargeSession } from '../utils/wallet';
 
 /* ---------- TYPES ---------- */
 interface RecordedSessionProps {
@@ -55,10 +55,14 @@ export default function RecordedSession({
   const maxCharge = session?.max_charge ?? Infinity;
   const optimalMaxSec = (session?.recommended_max ?? 20) * 60;
 
+  /* ---------------- CONFIG ---------------- */
+  const STUDENT_ID = "student_1"; // TODO: Get from auth context
+  const TEACHER_ID = session?.teacher_id || session?.teacher?.toLowerCase().replace(/\s+/g, "_") || "teacher_1";
+
   /* ---------------- LOAD WALLET ---------------- */
   useEffect(() => {
-    getWallets()
-      .then((data) => setStudentBalance(data.wallets.id1.balance))
+    getUserWallet(STUDENT_ID)
+      .then((data) => setStudentBalance(data.balance || 0))
       .catch(console.error);
   }, []);
 
@@ -279,9 +283,26 @@ export default function RecordedSession({
 
   /* ---------------- END SESSION ---------------- */
   const endSession = async () => {
+    if (cost <= 0) {
+      // No charge if cost is 0
+      onNavigate('summary', {
+        timeUsed: seconds,
+        cost: 0,
+        teacher: session.teacher,
+        subject: session.subject,
+        aiNotes: session.outcomes || [],
+        valueScore,
+        engagement,
+        studentBalance: studentBalance,
+        teacherReceived: 0,
+        platformCut: 0,
+      });
+      return;
+    }
+
     try {
-      const result = await chargeWallet(cost);
-      const walletData = await getWallets();
+      const result = await chargeSession(cost, STUDENT_ID, TEACHER_ID, session?.id);
+      const walletData = await getUserWallet(STUDENT_ID);
 
       onNavigate('summary', {
         timeUsed: seconds,
@@ -291,12 +312,15 @@ export default function RecordedSession({
         aiNotes: session.outcomes || [],
         valueScore,
         engagement,
-        studentBalance: walletData.wallets.id1.balance,
+        studentBalance: walletData.balance,
         teacherReceived: result.teacher_received,
         platformCut: result.platform_cut,
       });
     } catch (err: any) {
-      alert(err.message || 'Charge failed');
+      console.error('Session charge error:', err);
+      const msg = err?.message;
+      const text = typeof msg === 'string' ? msg : (msg ? JSON.stringify(msg) : 'Failed to charge session. Please check your balance and try again.');
+      alert(text);
     }
   };
 

@@ -1,27 +1,86 @@
 {
-    "balance": 230.0,
-    "transactions": [
-        {
-            "id": "wd_1770230794",
-            "type": "WITHDRAW",
-            "amount": 230.0,
-            "status": "COMPLETED",
-            "date": "2026-02-05 00:16:34",
-            "details": "To Bank: 112345678"
+    "users": {
+        "default": {
+            "balance": 230.0,
+            "transactions": [
+                {
+                    "id": "wd_1770230794",
+                    "type": "WITHDRAW",
+                    "amount": 230.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 00:16:34",
+                    "details": "To Bank: 112345678"
+                },
+                {
+                    "id": "intent_de377083-8fc4-4601-99c1-519432cb19bc",
+                    "type": "DEPOSIT",
+                    "amount": 230.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 00:16:01"
+                },
+                {
+                    "id": "intent_86e6a255-1dad-47a9-8ca6-1e7207836451",
+                    "type": "DEPOSIT",
+                    "amount": 230.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 00:15:17"
+                }
+            ]
         },
-        {
-            "id": "intent_de377083-8fc4-4601-99c1-519432cb19bc",
-            "type": "DEPOSIT",
-            "amount": 230.0,
-            "status": "COMPLETED",
-            "date": "2026-02-05 00:16:01"
+        "teacher_1": {
+            "balance": 1234.0,
+            "transactions": [
+                {
+                    "id": "intent_ff65575c-952a-4e02-8a2a-0c8c5da27421",
+                    "type": "DEPOSIT",
+                    "amount": 1234.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 01:19:02"
+                }
+            ],
+            "user_type": "student"
         },
-        {
-            "id": "intent_86e6a255-1dad-47a9-8ca6-1e7207836451",
-            "type": "DEPOSIT",
-            "amount": 230.0,
-            "status": "COMPLETED",
-            "date": "2026-02-05 00:15:17"
+        "student_1": {
+            "balance": 759.89,
+            "transactions": [
+                {
+                    "id": "tx_1770234094",
+                    "type": "SPEND",
+                    "amount": 0.11,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 01:11:34",
+                    "details": "Session payment to dr._aris_thorne"
+                },
+                {
+                    "id": "intent_660485f8-2e55-4084-a6df-eb0adc84d395",
+                    "type": "DEPOSIT",
+                    "amount": 435.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 01:04:18"
+                },
+                {
+                    "id": "intent_54c3fae4-edcf-4343-a668-1a2520ec2d82",
+                    "type": "DEPOSIT",
+                    "amount": 325.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 00:55:29"
+                }
+            ],
+            "user_type": "student"
+        },
+        "dr._aris_thorne": {
+            "balance": 0.09,
+            "transactions": [
+                {
+                    "id": "tx_1770234095",
+                    "type": "EARN",
+                    "amount": 0.09,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 01:11:34",
+                    "details": "Session payment from student_1"
+                }
+            ],
+            "user_type": "teacher"
         }
-    ]
+    }
 }

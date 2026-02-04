@@ -1355,5 +1355,24 @@
             "watch_percentage": 50.0,
             "flags": []
         }
+    },
+    {
+        "timestamp": "2026-02-04T19:41:47.843985",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
     }
 ]

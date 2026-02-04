@@ -1,5 +1,6 @@
-from fastapi import FastAPI, HTTPException,Request
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
+from typing import Optional
 import json
 import os
 import time
@@ -38,23 +39,55 @@ app.add_middleware(
 # Simple in-process lock (demo only)
 file_lock = Lock()
 
-# --- Finternet Wallet Database Functions ---
+# --- Finternet Wallet Database Functions (Multi-User) ---
 def load_wallet_db():
+    """Load wallet database with support for multiple users."""
     if not os.path.exists(WALLET_DB_FILE):
-        return {"balance": 0.00, "transactions": []}
+        return {"users": {}}
     try:
         with open(WALLET_DB_FILE, 'r') as f:
-            return json.load(f)
+            data = json.load(f)
+            # Migrate old format to new format if needed
+            if "balance" in data and "transactions" in data:
+                # Old single-user format, migrate to new format
+                return {"users": {"default": data}}
+            return data
     except (json.JSONDecodeError, ValueError):
-        return {"balance": 0.00, "transactions": []}
+        return {"users": {}}
 
 def save_wallet_db(data):
+    """Save wallet database."""
     WALLET_DB_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(WALLET_DB_FILE, 'w') as f:
         json.dump(data, f, indent=4)
 
-def add_wallet_transaction(type, amount, status="PENDING", intent_id=None):
+def get_user_wallet(user_id: str, user_type: str = "student"):
+    """Get or create wallet for a specific user."""
     db = load_wallet_db()
+    if "users" not in db:
+        db["users"] = {}
+    
+    if user_id not in db["users"]:
+        db["users"][user_id] = {
+            "balance": 0.00,
+            "transactions": [],
+            "user_type": user_type
+        }
+        save_wallet_db(db)
+    
+    return db["users"][user_id]
+
+def update_user_wallet(user_id: str, wallet_data: dict):
+    """Update wallet for a specific user."""
+    db = load_wallet_db()
+    if "users" not in db:
+        db["users"] = {}
+    db["users"][user_id] = wallet_data
+    save_wallet_db(db)
+
+def add_wallet_transaction(user_id: str, type: str, amount: float, status="PENDING", intent_id=None, details=None, update_balance=False, balance_delta=0):
+    """Add a transaction to a user's wallet."""
+    wallet = get_user_wallet(user_id)
     tx = {
         "id": intent_id if intent_id else f"tx_{int(time.time())}",
         "type": type,
@@ -62,16 +95,24 @@ def add_wallet_transaction(type, amount, status="PENDING", intent_id=None):
         "status": status,
         "date": time.strftime("%Y-%m-%d %H:%M:%S")
     }
-    db["transactions"].insert(0, tx)
-    save_wallet_db(db)
-    return db
+    if details:
+        tx["details"] = details
+    
+    wallet["transactions"].insert(0, tx)
+    
+    # Update balance if requested (for backward compatibility, balance should be updated separately)
+    if update_balance:
+        wallet["balance"] += balance_delta
+    
+    update_user_wallet(user_id, wallet)
+    return wallet
 
-def auto_claim_pending_deposits():
-    """Checks PENDING deposits, attempts to submit proof, and updates DB."""
-    db = load_wallet_db()
+def auto_claim_pending_deposits(user_id: str):
+    """Checks PENDING deposits for a user, attempts to submit proof, and updates DB."""
+    wallet = get_user_wallet(user_id)
     updated = False
     
-    for tx in db["transactions"]:
+    for tx in wallet["transactions"]:
         if tx["type"] == "DEPOSIT" and tx["status"] == "PENDING":
             try:
                 # 1. Generate Proof
@@ -97,15 +138,15 @@ def auto_claim_pending_deposits():
                         
                         if remote_status in valid_states:
                             tx["status"] = "COMPLETED"
-                            db["balance"] += tx["amount"]
+                            wallet["balance"] += tx["amount"]
                             updated = True
                             
             except Exception as e:
                 print(f"Auto-claim error for {tx['id']}: {e}")
 
     if updated:
-        save_wallet_db(db)
-    return db
+        update_user_wallet(user_id, wallet)
+    return wallet
 
 
 # ---------- Models ----------
@@ -607,29 +648,57 @@ async def ask_ai_stream(query: ChatQuery):
 # --- YOLO Model (for face detection) ---
 model = YOLO("yolov8n-pose.pt")
 
-# --- Finternet Wallet API Endpoints ---
+# --- Finternet Wallet API Endpoints (Multi-User) ---
 
 class DepositRequest(BaseModel):
     amount: float
+    user_id: str
 
 class WithdrawRequest(BaseModel):
     amount: float
     bankAccount: str
+    user_id: str
 
 class SpendRequest(BaseModel):
     amount: float
+    user_id: str
 
-@app.get("/api/wallet-sync")
-async def wallet_sync():
-    """Sync wallet state - checks pending deposits and updates balance."""
-    data = auto_claim_pending_deposits()
-    return data
+class SessionChargeRequest(BaseModel):
+    amount: float
+    student_id: str
+    teacher_id: str
+    session_id: Optional[str] = None
+
+    @validator("amount", pre=True)
+    def amount_to_float(cls, v):
+        if v is None:
+            return 0.0
+        try:
+            return float(v)
+        except (TypeError, ValueError):
+            return 0.0
+
+    @validator("student_id", "teacher_id", pre=True)
+    def ids_to_str(cls, v):
+        if v is None:
+            return ""
+        return str(v).strip() or "unknown"
+
+    class Config:
+        extra = "ignore"
+
+@app.get("/api/wallet-sync/{user_id}")
+async def wallet_sync(user_id: str):
+    """Sync wallet state for a specific user - checks pending deposits and updates balance."""
+    wallet = auto_claim_pending_deposits(user_id)
+    return wallet
 
 @app.post("/api/wallet/deposit")
 async def wallet_deposit(req: DepositRequest):
-    """Create a deposit payment intent."""
+    """Create a deposit payment intent for a user."""
     try:
         amount = req.amount
+        user_id = req.user_id
         
         payload = {
             "amount": str(amount),
@@ -649,7 +718,7 @@ async def wallet_deposit(req: DepositRequest):
         payment_url = api_data.get('data', {}).get('paymentUrl')
         intent_id = api_data.get('data', {}).get('id')
 
-        add_wallet_transaction("DEPOSIT", amount, "PENDING", intent_id)
+        add_wallet_transaction(user_id, "DEPOSIT", amount, "PENDING", intent_id)
 
         return {"paymentUrl": payment_url, "intentId": intent_id}
 
@@ -658,31 +727,21 @@ async def wallet_deposit(req: DepositRequest):
 
 @app.post("/api/wallet/withdraw")
 async def wallet_withdraw(req: WithdrawRequest):
-    """Withdraw funds to bank account."""
+    """Withdraw funds to bank account for a user."""
     try:
         amount = float(req.amount)
         bank_account = req.bankAccount
+        user_id = req.user_id
         
-        db = load_wallet_db()
+        wallet = get_user_wallet(user_id)
         
         # Check if user has enough funds
-        if db["balance"] < amount:
+        if wallet["balance"] < amount:
             raise HTTPException(status_code=400, detail="Insufficient wallet balance")
         
-        # Record the transaction
-        tx = {
-            "id": f"wd_{int(time.time())}", 
-            "type": "WITHDRAW", 
-            "amount": amount, 
-            "status": "COMPLETED", 
-            "date": time.strftime("%Y-%m-%d %H:%M:%S"),
-            "details": f"To Bank: {bank_account}"
-        }
-        
-        # Deduct Balance
-        db["balance"] -= amount
-        db["transactions"].insert(0, tx)
-        save_wallet_db(db)
+        # Deduct Balance and add transaction
+        wallet["balance"] -= amount
+        add_wallet_transaction(user_id, "WITHDRAW", amount, "COMPLETED", details=f"To Bank: {bank_account}")
         
         return {"success": True}
 
@@ -693,26 +752,82 @@ async def wallet_withdraw(req: WithdrawRequest):
 
 @app.post("/api/wallet/spend")
 async def wallet_spend(req: SpendRequest):
-    """Spend money (e.g., pay for a session)."""
+    """Spend money (e.g., pay for a session) for a user."""
     try:
         amount = float(req.amount)
-        db = load_wallet_db()
+        user_id = req.user_id
         
-        if db["balance"] < amount:
+        wallet = get_user_wallet(user_id)
+        
+        if wallet["balance"] < amount:
             raise HTTPException(status_code=400, detail="Insufficient funds")
         
-        tx = {
-            "id": f"tx_{int(time.time())}", 
-            "type": "SPEND", 
-            "amount": amount, 
-            "status": "COMPLETED", 
-            "date": time.strftime("%Y-%m-%d %H:%M:%S")
-        }
-        db["balance"] -= amount
-        db["transactions"].insert(0, tx)
-        save_wallet_db(db)
+        wallet["balance"] -= amount
+        add_wallet_transaction(user_id, "SPEND", amount, "COMPLETED")
         
         return {"success": True}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/api/wallet/charge-session")
+async def charge_session(req: SessionChargeRequest):
+    """Charge student for session and pay teacher (with platform cut)."""
+    try:
+        amount = round(float(req.amount), 2)
+        student_id = req.student_id
+        teacher_id = req.teacher_id
+        
+        if amount < 0:
+            raise HTTPException(status_code=400, detail="Invalid amount")
+        
+        # Get wallets
+        student_wallet = get_user_wallet(student_id, "student")
+        teacher_wallet = get_user_wallet(teacher_id, "teacher")
+        
+        # Check student balance
+        if student_wallet["balance"] < amount:
+            raise HTTPException(status_code=400, detail="Insufficient student balance")
+        
+        # Calculate splits
+        platform_cut = round(amount * PLATFORM_CUT, 2)
+        teacher_share = round(amount - platform_cut, 2)
+        
+        # Charge student - update balance and add transaction
+        student_wallet["balance"] -= amount
+        tx_student = {
+            "id": f"tx_{int(time.time())}",
+            "type": "SPEND",
+            "amount": float(amount),
+            "status": "COMPLETED",
+            "date": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "details": f"Session payment to {teacher_id}"
+        }
+        student_wallet["transactions"].insert(0, tx_student)
+        update_user_wallet(student_id, student_wallet)
+        
+        # Pay teacher - update balance and add transaction
+        teacher_wallet["balance"] += teacher_share
+        tx_teacher = {
+            "id": f"tx_{int(time.time()) + 1}",
+            "type": "EARN",
+            "amount": float(teacher_share),
+            "status": "COMPLETED",
+            "date": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "details": f"Session payment from {student_id}"
+        }
+        teacher_wallet["transactions"].insert(0, tx_teacher)
+        update_user_wallet(teacher_id, teacher_wallet)
+        
+        return {
+            "charged": amount,
+            "teacher_received": teacher_share,
+            "platform_cut": platform_cut,
+            "student_balance": student_wallet["balance"],
+            "teacher_balance": teacher_wallet["balance"]
+        }
+        
     except HTTPException:
         raise
     except Exception as e:

@@ -26,6 +26,9 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
   const nextLevelAt = 1000;
   const progress = (efficiencyScore / nextLevelAt) * 100;
 
+  // ---- USER ID ----
+  const STUDENT_ID = "student_1"; // TODO: Get from auth context
+
   // ---- WALLET STATE ----
   const [balance, setBalance] = useState<number>(0);
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -39,7 +42,7 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
   // ---- FETCH WALLET ----
   const fetchWalletData = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/wallet-sync");
+      const res = await fetch(`http://localhost:8000/api/wallet-sync/${STUDENT_ID}`);
       if (!res.ok) throw new Error("Failed to fetch wallet");
       const data = await res.json();
       setBalance(data.balance || 0);
@@ -66,7 +69,10 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
       const res = await fetch("http://localhost:8000/api/wallet/deposit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: Number(amount) }),
+        body: JSON.stringify({ 
+          amount: Number(amount),
+          user_id: STUDENT_ID
+        }),
       });
       const data = await res.json();
       if (data.paymentUrl) {
@@ -91,7 +97,8 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           amount: Number(amount),
-          bankAccount: bankAccount || "Default Bank"
+          bankAccount: bankAccount || "Default Bank",
+          user_id: STUDENT_ID
         }),
       });
       const data = await res.json();
@@ -115,7 +122,10 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
       const res = await fetch("http://localhost:8000/api/wallet/spend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: Number(amount) }),
+        body: JSON.stringify({ 
+          amount: Number(amount),
+          user_id: STUDENT_ID
+        }),
       });
       const data = await res.json();
       if (data.success) {

@@ -298,6 +298,9 @@ interface ReviewItem {
 export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) {
   const [averageRating, setAverageRating] = useState<number | null>(null);
   
+  // ---- USER ID ----
+  const TEACHER_ID = "teacher_1"; // TODO: Get from auth context
+  
   // ---- WALLET STATE ----
   const [balance, setBalance] = useState<number>(0);
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -341,7 +344,7 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
   // ---- FETCH WALLET ----
   const fetchWalletData = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/wallet-sync");
+      const res = await fetch(`http://localhost:8000/api/wallet-sync/${TEACHER_ID}`);
       if (!res.ok) throw new Error("Failed to fetch wallet");
       const data = await res.json();
       setBalance(data.balance || 0);
@@ -368,7 +371,10 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
       const res = await fetch("http://localhost:8000/api/wallet/deposit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: Number(amount) }),
+        body: JSON.stringify({ 
+          amount: Number(amount),
+          user_id: TEACHER_ID
+        }),
       });
       const data = await res.json();
       if (data.paymentUrl) {
@@ -393,7 +399,8 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           amount: Number(amount),
-          bankAccount: bankAccount || "Default Bank"
+          bankAccount: bankAccount || "Default Bank",
+          user_id: TEACHER_ID
         }),
       });
       const data = await res.json();
@@ -417,7 +424,10 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
       const res = await fetch("http://localhost:8000/api/wallet/spend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: Number(amount) }),
+        body: JSON.stringify({ 
+          amount: Number(amount),
+          user_id: TEACHER_ID
+        }),
       });
       const data = await res.json();
       if (data.success) {
@@ -576,8 +586,8 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
                       <p className="text-xs text-gray-400 font-mono mt-1">{tx.id.substring(0, 20)}...</p>
                     </div>
                     <div className="text-right">
-                      <p className={`font-bold text-lg ${tx.type === "DEPOSIT" ? "text-green-600" : "text-red-600"}`}>
-                        {tx.type === "DEPOSIT" ? "+" : "-"}${tx.amount.toFixed(2)}
+                      <p className={`font-bold text-lg ${tx.type === "DEPOSIT" || tx.type === "EARN" ? "text-green-600" : "text-red-600"}`}>
+                        {tx.type === "DEPOSIT" || tx.type === "EARN" ? "+" : "-"}${tx.amount.toFixed(2)}
                       </p>
                       {tx.status === "PENDING" && (
                         <p className="text-blue-500 text-xs mt-1 animate-pulse">Verifying...</p>
@@ -619,10 +629,10 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500">Total Spent</p>
-                  <p className="text-xl font-bold text-gray-800">
+                  <p className="text-xs text-gray-500">Total Earnings</p>
+                  <p className="text-xl font-bold text-green-600">
                     ${transactions
-                      .filter((t) => t.type === "SPEND")
+                      .filter((t) => t.type === "EARN")
                       .reduce((sum, t) => sum + t.amount, 0)
                       .toFixed(2)}
                   </p>
