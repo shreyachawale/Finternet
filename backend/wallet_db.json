@@ -28,8 +28,15 @@
             ]
         },
         "teacher_1": {
-            "balance": 1234.0,
+            "balance": 5587.0,
             "transactions": [
+                {
+                    "id": "intent_66aa23a7-da8a-4b5c-9672-b8fe7ea721c4",
+                    "type": "DEPOSIT",
+                    "amount": 4353.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 01:29:18"
+                },
                 {
                     "id": "intent_ff65575c-952a-4e02-8a2a-0c8c5da27421",
                     "type": "DEPOSIT",
@@ -41,8 +48,16 @@
             "user_type": "student"
         },
         "student_1": {
-            "balance": 759.89,
+            "balance": 759.77,
             "transactions": [
+                {
+                    "id": "tx_1770235403",
+                    "type": "SPEND",
+                    "amount": 0.12,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 01:33:23",
+                    "details": "Session payment to dr._aris_thorne"
+                },
                 {
                     "id": "tx_1770234094",
                     "type": "SPEND",
@@ -69,8 +84,16 @@
             "user_type": "student"
         },
         "dr._aris_thorne": {
-            "balance": 0.09,
+            "balance": 0.19,
             "transactions": [
+                {
+                    "id": "tx_1770235404",
+                    "type": "EARN",
+                    "amount": 0.1,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 01:33:23",
+                    "details": "Session payment from student_1"
+                },
                 {
                     "id": "tx_1770234095",
                     "type": "EARN",

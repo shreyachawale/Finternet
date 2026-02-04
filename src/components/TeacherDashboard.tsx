@@ -295,11 +295,33 @@ interface ReviewItem {
   };
 }
 
+// Demo teachers for hackathon – switch to see different wallets
+const DEMO_TEACHERS = [
+  { id: "teacher_1", label: "Teacher 1" },
+  { id: "dr._aris_thorne", label: "Dr. Aris Thorne" },
+];
+
+function formatFromDetails(details: string | undefined): string {
+  if (!details) return "a student";
+  const match = details.match(/from\s+(.+)/i);
+  return match ? match[1].trim() : details;
+}
+
+function timeAgo(dateStr: string): string {
+  const d = new Date(dateStr);
+  const sec = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (sec < 60) return "Just now";
+  if (sec < 3600) return `${Math.floor(sec / 60)}m ago`;
+  if (sec < 86400) return `${Math.floor(sec / 3600)}h ago`;
+  return d.toLocaleDateString();
+}
+
 export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) {
   const [averageRating, setAverageRating] = useState<number | null>(null);
   
-  // ---- USER ID ----
-  const TEACHER_ID = "teacher_1"; // TODO: Get from auth context
+  // ---- TEACHER SELECTOR (for hackathon demo) ----
+  const [selectedTeacherId, setSelectedTeacherId] = useState(DEMO_TEACHERS[0].id);
+  const teacherLabel = DEMO_TEACHERS.find((t) => t.id === selectedTeacherId)?.label ?? selectedTeacherId;
   
   // ---- WALLET STATE ----
   const [balance, setBalance] = useState<number>(0);
@@ -310,6 +332,8 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
   const [amount, setAmount] = useState("");
   const [bankAccount, setBankAccount] = useState("");
   const [processing, setProcessing] = useState(false);
+
+  const earnTransactions = transactions.filter((t) => t.type === "EARN");
 
   useEffect(() => {
     fetch('http://localhost:8000/reviews')
@@ -344,7 +368,7 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
   // ---- FETCH WALLET ----
   const fetchWalletData = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/wallet-sync/${TEACHER_ID}`);
+      const res = await fetch(`http://localhost:8000/api/wallet-sync/${selectedTeacherId}`);
       if (!res.ok) throw new Error("Failed to fetch wallet");
       const data = await res.json();
       setBalance(data.balance || 0);
@@ -357,11 +381,16 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
   };
 
   useEffect(() => {
+    setLoadingBalance(true);
     fetchWalletData();
-    // Poll every 3 seconds for updates
-    const interval = setInterval(fetchWalletData, 3000);
+  }, [selectedTeacherId]);
+
+  useEffect(() => {
+    fetchWalletData();
+    // Poll every 2 seconds so teacher sees payments almost as soon as student ends session
+    const interval = setInterval(fetchWalletData, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedTeacherId]);
 
   // ---- WALLET ACTIONS ----
   const handleDeposit = async () => {
@@ -373,7 +402,7 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           amount: Number(amount),
-          user_id: TEACHER_ID
+          user_id: selectedTeacherId
         }),
       });
       const data = await res.json();
@@ -400,7 +429,7 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
         body: JSON.stringify({ 
           amount: Number(amount),
           bankAccount: bankAccount || "Default Bank",
-          user_id: TEACHER_ID
+          user_id: selectedTeacherId
         }),
       });
       const data = await res.json();
@@ -426,7 +455,7 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           amount: Number(amount),
-          user_id: TEACHER_ID
+          user_id: selectedTeacherId
         }),
       });
       const data = await res.json();
@@ -487,14 +516,68 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
 
       {/* MAIN */}
       <div className="max-w-7xl mx-auto px-8 py-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            Teacher Dashboard
-          </h1>
-          <p className="text-gray-600">
-            Track your earnings and teaching performance
-          </p>
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">
+              Teacher Dashboard
+            </h1>
+            <p className="text-gray-600">
+              Track your earnings and teaching performance
+            </p>
+          </div>
+          {/* Hackathon: switch which teacher's wallet to view */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-gray-600">Viewing as:</span>
+            <select
+              value={selectedTeacherId}
+              onChange={(e) => setSelectedTeacherId(e.target.value)}
+              className="px-4 py-2 rounded-xl border border-gray-300 bg-white font-medium text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
+            >
+              {DEMO_TEACHERS.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
+
+        {/* LIVE PAYMENTS FROM STUDENTS - hackathon demo */}
+        {earnTransactions.length > 0 && (
+          <div className="mb-8 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-white shadow-xl">
+            <h2 className="text-xl font-bold mb-1 flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-white animate-pulse" />
+              Live payments from students
+            </h2>
+            <p className="text-green-100 text-sm mb-4">
+              {teacherLabel} received the following from learners
+            </p>
+            <div className="space-y-3 max-h-48 overflow-y-auto">
+              {earnTransactions.map((tx) => {
+                const fromWho = formatFromDetails(tx.details);
+                const isRecent = new Date(tx.date).getTime() > Date.now() - 60 * 1000;
+                return (
+                  <div
+                    key={tx.id}
+                    className={`flex items-center justify-between rounded-xl bg-white/20 backdrop-blur-sm px-4 py-3 ${isRecent ? "ring-2 ring-white/50" : ""}`}
+                  >
+                    <div>
+                      <p className="font-semibold">
+                        Received ${tx.amount.toFixed(2)} from {fromWho}
+                      </p>
+                      <p className="text-sm text-green-100">{timeAgo(tx.date)}</p>
+                    </div>
+                    {isRecent && (
+                      <span className="text-xs font-bold bg-white/30 px-2 py-1 rounded-full">
+                        New
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* STATS */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
