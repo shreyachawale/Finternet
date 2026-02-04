@@ -1,0 +1,153 @@
+[
+  {
+    "id": 1,
+    "teacher": "Sarah Chen",
+    "subject": "Piano - Jazz Improvisation",
+    "description": "A practical, hands-on introduction to jazz piano improvisation. This recorded session focuses on ii–V–I chord progressions, essential voicings, and melodic improvisation.",
+    "rate": 1.5,
+    "rating": 4.9,
+    "students": 328,
+    "avatar": "SC",
+    "verified": true,
+
+    "youtubeEmbedUrl": "https://www.youtube.com/embed/BBz-Jyr23M4?si=Zdm_zsq7k8s_mxCc",
+    "videoUrl": "/videos/guitar.mp4",
+
+    "tags": ["piano", "jazz", "music", "improvisation"],
+    "level": "beginner-intermediate",
+
+    "outcomes": [
+      "Understand ii–V–I chord progressions",
+      "Play essential jazz piano voicings",
+      "Improvise simple melodies over changes"
+    ],
+
+    "recommended_min": 12,
+    "recommended_max": 18,
+    "total_length_min": 35,
+    "max_charge": 2.7,
+
+    "recorded": true,
+    "language": "English",
+    "last_updated": "Jan 2026",
+    "prerequisites": "Basic piano knowledge recommended",
+    "learning_style": "Demonstration + guided practice",
+    "instructor_bio": "Sarah Chen is a jazz pianist with 12+ years of teaching experience and Berklee training.",
+
+    "why_this_fits": "Covers ii–V–I chord progressions. Most learners grasp the core concepts within the first 15 minutes."
+  },
+
+  {
+    "id": 2,
+    "teacher": "Marcus Johnson",
+    "subject": "Spanish Conversation for Beginners",
+    "description": "Learn practical Spanish conversation through guided listening and speaking exercises.",
+    "rate": 0.12,
+    "rating": 4.8,
+    "students": 512,
+    "avatar": "MJ",
+    "verified": true,
+
+    "youtubeEmbedUrl": "https://www.youtube.com/embed/kJQP7kiw5Fk",
+    "videoUrl": "/videos/spanish-conversation-beginners.mp4",
+
+    "tags": ["spanish", "language", "conversation"],
+    "level": "beginner",
+
+    "outcomes": [
+      "Hold basic Spanish conversations",
+      "Improve pronunciation",
+      "Use everyday phrases"
+    ],
+
+    "recommended_min": 15,
+    "recommended_max": 22,
+    "total_length_min": 40,
+    "max_charge": 2.5,
+
+    "recorded": true,
+    "language": "Spanish / English",
+    "last_updated": "Dec 2025",
+    "prerequisites": "No prior knowledge required",
+    "learning_style": "Listening + repetition",
+    "instructor_bio": "Marcus Johnson is a certified Spanish instructor with 5,000+ learners taught.",
+
+    "why_this_fits": "Ideal for short, focused speaking practice without long lessons or subscriptions."
+  },
+
+  {
+    "id": 3,
+    "teacher": "Elena Rodriguez",
+    "subject": "Yoga & Mindfulness for Stress Relief",
+    "description": "A calming guided yoga and mindfulness session for stress relief and flexibility.",
+    "rate": 0.10,
+    "rating": 4.9,
+    "students": 421,
+    "avatar": "ER",
+    "verified": true,
+
+    "youtubeEmbedUrl": "https://www.youtube.com/embed/v7AYKMP6rOE",
+    "videoUrl": "/videos/yoga-mindfulness-stress-relief.mp4",
+
+    "tags": ["yoga", "mindfulness", "wellness"],
+    "level": "all-levels",
+
+    "outcomes": [
+      "Reduce stress",
+      "Improve breathing",
+      "Practice mindfulness"
+    ],
+
+    "recommended_min": 10,
+    "recommended_max": 16,
+    "total_length_min": 30,
+    "max_charge": 2.0,
+
+    "recorded": true,
+    "language": "English",
+    "last_updated": "Nov 2025",
+    "prerequisites": "None",
+    "learning_style": "Guided movement + breathing",
+    "instructor_bio": "Elena Rodriguez is a certified yoga instructor specializing in stress relief.",
+
+    "why_this_fits": "Most learners reach a calm, relaxed state within the first 10–15 minutes."
+  },
+
+  {
+    "id": 4,
+    "teacher": "Dr. Aris Thorne",
+    "subject": "Data Science - Linear Regression Essentials",
+    "description": "Master the fundamentals of Linear Regression. This session breaks down the mathematical intuition, cost functions, and practical implementation using Python's Scikit-Learn.",
+    "rate": 0.25,
+    "rating": 4.85,
+    "students": 892,
+    "avatar": "AT",
+    "verified": true,
+
+    "youtubeEmbedUrl": "https://www.youtube.com/embed/iIUq0BagS7M",
+    "videoUrl": "/videos/ds.mp4",
+
+    "tags": ["data-science", "python", "machine-learning", "statistics"],
+    "level": "intermediate",
+
+    "outcomes": [
+      "Interpret the Linear Regression equation (y = mx + b)",
+      "Understand Gradient Descent and Mean Squared Error",
+      "Build a predictive model using Scikit-Learn"
+    ],
+
+    "recommended_min": 15,
+    "recommended_max": 25,
+    "total_length_min": 45,
+    "max_charge": 6.25,
+
+    "recorded": true,
+    "language": "English",
+    "last_updated": "Feb 2026",
+    "prerequisites": "Basic Python and High School Algebra",
+    "learning_style": "Visual Intuition + Live Coding",
+    "instructor_bio": "Dr. Aris Thorne is a Senior Data Scientist with a PhD in Statistics and 8 years of industry experience at top-tier tech firms.",
+
+    "why_this_fits": "Perfect for refreshing core ML concepts or debugging specific model intuition in under 20 minutes."
+  }
+]

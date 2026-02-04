@@ -1,0 +1,16 @@
+{
+  "wallets": {
+    "id1": {
+      "role": "student",
+      "balance": 163.55999999999997
+    },
+    "id2": {
+      "role": "teacher",
+      "balance": 122.14999999999999
+    },
+    "id3": {
+      "role": "middleman",
+      "balance": 29.290000000000003
+    }
+  }
+}
