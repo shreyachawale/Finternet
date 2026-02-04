@@ -49,6 +49,15 @@ export default function RecordedSession({
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const watchedSecondsRef = useRef<Set<number>>(new Set());
+  
+  // Free preview period state
+  const [freePeriodActive, setFreePeriodActive] = useState(true);
+  const [freeSecondsWatched, setFreeSecondsWatched] = useState(0);
+  const [freeCountdown, setFreeCountdown] = useState(30);
+  const lastVideoTimeRef = useRef(0);
+
+  /* ---------------- CONFIG ---------------- */
+  const FREE_PREVIEW_SECONDS = 30;
 
   /* ---------------- CONFIG ---------------- */
   const rate = session?.rate ?? 0.15;
@@ -97,17 +106,29 @@ export default function RecordedSession({
 
     const onPause = () => setIsBilling(false);
     const onEnd = () => setIsBilling(false);
+    
+    // Detect seeking/skipping to check if user skips past free period
+    const onSeeking = () => {
+      if (freePeriodActive && video.currentTime > FREE_PREVIEW_SECONDS) {
+        // User skipped past free period, start billing
+        setFreePeriodActive(false);
+        setFreeSecondsWatched(FREE_PREVIEW_SECONDS);
+        setFreeCountdown(0);
+      }
+    };
 
     video.addEventListener('play', onPlay);
     video.addEventListener('pause', onPause);
     video.addEventListener('ended', onEnd);
+    video.addEventListener('seeking', onSeeking);
 
     return () => {
       video.removeEventListener('play', onPlay);
       video.removeEventListener('pause', onPause);
       video.removeEventListener('ended', onEnd);
+      video.removeEventListener('seeking', onSeeking);
     };
-  }, [autoStopped, insufficientBalance]);
+  }, [autoStopped, insufficientBalance, freePeriodActive, FREE_PREVIEW_SECONDS]);
 
   /* ---------------- BILLING TIMER ---------------- */
   useEffect(() => {
@@ -118,6 +139,23 @@ export default function RecordedSession({
       if (!video) return;
 
       const currentSecond = Math.floor(video.currentTime);
+
+      // During free period, track free seconds but don't charge
+      if (freePeriodActive) {
+        if (!watchedSecondsRef.current.has(currentSecond)) {
+          watchedSecondsRef.current.add(currentSecond);
+          setFreeSecondsWatched((prev) => prev + 1);
+          setFreeCountdown((prev) => Math.max(0, prev - 1));
+          
+          // Check if free period has ended
+          if (freeSecondsWatched + 1 >= FREE_PREVIEW_SECONDS) {
+            setFreePeriodActive(false);
+          }
+        }
+        return; // Don't charge during free period
+      }
+
+      // After free period, start billing normally
       const nextCharge = rate / 60;
 
       if (cost + nextCharge > studentBalance) {
@@ -136,7 +174,7 @@ export default function RecordedSession({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isBilling, rate, maxCharge, cost, studentBalance]);
+  }, [isBilling, rate, maxCharge, cost, studentBalance, freePeriodActive, freeSecondsWatched, FREE_PREVIEW_SECONDS]);
 
   /* ---------------- AUTO STOP ---------------- */
   useEffect(() => {
@@ -367,6 +405,25 @@ export default function RecordedSession({
       <div className="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* VIDEO */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Free Preview Countdown Banner */}
+          {freePeriodActive && (
+            <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-500/50 rounded-xl p-4 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="bg-green-500 rounded-full w-3 h-3 animate-pulse" />
+                <span className="font-semibold text-green-400">
+                  Free Preview Active
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Clock className="text-green-400" size={20} />
+                <span className="text-2xl font-bold text-green-400">
+                  {freeCountdown}s
+                </span>
+                <span className="text-sm text-gray-400">remaining</span>
+              </div>
+            </div>
+          )}
+
           <div className="aspect-video bg-black rounded-2xl overflow-hidden">
             <video
               ref={videoRef}

@@ -48,8 +48,32 @@
             "user_type": "student"
         },
         "student_1": {
-            "balance": 759.77,
+            "balance": 759.6300000000001,
             "transactions": [
+                {
+                    "id": "tx_1770240675",
+                    "type": "SPEND",
+                    "amount": 0.03,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 03:01:15",
+                    "details": "Session payment to dr._aris_thorne"
+                },
+                {
+                    "id": "tx_1770240282",
+                    "type": "SPEND",
+                    "amount": 0.06,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 02:54:42",
+                    "details": "Session payment to dr._aris_thorne"
+                },
+                {
+                    "id": "tx_1770239534",
+                    "type": "SPEND",
+                    "amount": 0.05,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 02:42:14",
+                    "details": "Session payment to dr._aris_thorne"
+                },
                 {
                     "id": "tx_1770235403",
                     "type": "SPEND",
@@ -84,8 +108,32 @@
             "user_type": "student"
         },
         "dr._aris_thorne": {
-            "balance": 0.19,
+            "balance": 0.30000000000000004,
             "transactions": [
+                {
+                    "id": "tx_1770240676",
+                    "type": "EARN",
+                    "amount": 0.02,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 03:01:15",
+                    "details": "Session payment from student_1"
+                },
+                {
+                    "id": "tx_1770240283",
+                    "type": "EARN",
+                    "amount": 0.05,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 02:54:42",
+                    "details": "Session payment from student_1"
+                },
+                {
+                    "id": "tx_1770239535",
+                    "type": "EARN",
+                    "amount": 0.04,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 02:42:14",
+                    "details": "Session payment from student_1"
+                },
                 {
                     "id": "tx_1770235404",
                     "type": "EARN",

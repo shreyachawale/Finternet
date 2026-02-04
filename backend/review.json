@@ -1412,5 +1412,81 @@
                 "Rating (2★) inconsistent with sentiment (0.4404)."
             ]
         }
+    },
+    {
+        "timestamp": "2026-02-04T21:12:22.307580",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T21:28:02.656578",
+        "input": {
+            "review_text": "",
+            "star_rating": 5,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T21:31:24.617654",
+        "input": {
+            "review_text": "",
+            "star_rating": 1,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-04T21:45:29.871799",
+        "input": {
+            "review_text": "",
+            "star_rating": 1,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Questionable",
+            "trust_score": 70,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Extreme rating with no explanation is suspicious."
+            ]
+        }
     }
 ]
