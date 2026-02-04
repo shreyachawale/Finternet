@@ -267,7 +267,7 @@ import re
 from fastapi.responses import StreamingResponse
 from youtube_transcript_api import YouTubeTranscriptApi
 from openai import OpenAI  # OpenRouter uses the OpenAI library
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Request
 import cv2, numpy as np
 from ultralytics import YOLO
 # app = FastAPI()
@@ -521,18 +521,99 @@ async def ask_ai_stream(query: ChatQuery):
     return StreamingResponse(event_generator(), media_type="text/plain")
 
 
-    model = YOLO("yolov8n-pose.pt")
+model = YOLO("yolov8n-pose.pt")
+
+BAD_FRAME_THRESHOLD = 7        # ~6–7 seconds
+RECOVERY_THRESHOLD = 2         # need 2 focused frames to recover
+COOLDOWN_SEC = 10              # no repeat warning for 10 sec
+CONFIDENCE_THRESHOLD = 0.6
+import time
+# -------- STATE --------
+bad_frames = 0
+good_frames = 0
+last_alert_ts = 0
+stable_status = "NO_FACE"
 
 @app.post("/face")
-async def analyze(file: UploadFile = File(...)):
-    img_bytes = await file.read()
-    img = cv2.imdecode(np.frombuffer(img_bytes, np.uint8), cv2.IMREAD_COLOR)
+async def face(request: Request):
+    global bad_frames, good_frames, last_alert_ts, stable_status
+
+    body = await request.body()
+    now = time.time()
+
+    if not body:
+        stable_status = "NO_FACE"
+        return {"status": stable_status}
+
+    img = cv2.imdecode(np.frombuffer(body, np.uint8), cv2.IMREAD_COLOR)
+    if img is None:
+        stable_status = "NO_FACE"
+        return {"status": stable_status}
 
     results = model(img, verbose=False)
 
-    status = "NO PERSON"
-    for r in results:
-        if r.keypoints is not None and len(r.keypoints.data) > 0:
-            status = "FOCUSED"  # reuse your gaze logic here
+    frame_status = "NO_FACE"
 
-    return {"status": status}
+    for r in results:
+        if (
+            r.keypoints is not None
+            and len(r.keypoints.data) > 0
+            and float(r.keypoints.conf[0]) > CONFIDENCE_THRESHOLD
+        ):
+            kpts = r.keypoints.data[0].cpu().numpy()
+
+            def get_focus_status(keypoints):
+                if keypoints.shape[0] < 3:
+                    return None
+
+                nose = keypoints[0][:2]
+                left_eye = keypoints[1][:2]
+                right_eye = keypoints[2][:2]
+
+                if (
+                    keypoints[0][2] < 0.5
+                    or keypoints[1][2] < 0.5
+                    or keypoints[2][2] < 0.5
+                ):
+                    return None
+
+                eye_center_x = (left_eye[0] + right_eye[0]) / 2
+                eye_width = abs(right_eye[0] - left_eye[0])
+                if eye_width == 0:
+                    return 0
+
+                return (nose[0] - eye_center_x) / eye_width
+
+            gaze = get_focus_status(kpts)
+
+            if gaze is not None and -0.20 < gaze < 0.20:
+                frame_status = "FOCUSED"
+            else:
+                frame_status = "LOOKING_AWAY"
+
+    # -------- SMOOTHING LOGIC --------
+    if frame_status == "FOCUSED":
+        good_frames += 1
+        bad_frames = max(0, bad_frames - 1)
+
+        if good_frames >= RECOVERY_THRESHOLD:
+            stable_status = "FOCUSED"
+
+        return {"status": stable_status}
+
+    if frame_status == "LOOKING_AWAY":
+        bad_frames += 1
+        good_frames = 0
+
+        if (
+            bad_frames >= BAD_FRAME_THRESHOLD
+            and now - last_alert_ts > COOLDOWN_SEC
+        ):
+            last_alert_ts = now
+            stable_status = "LOOKING_AWAY"
+            return {"status": "LOOKING_AWAY"}
+
+        return {"status": stable_status}
+
+    stable_status = "NO_FACE"
+    return {"status": stable_status}

@@ -267,7 +267,7 @@ export default function RecordedSession({
       } catch (e) {
         console.error(e);
       }
-    }, 600);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [isBilling]);
