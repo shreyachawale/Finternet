@@ -48,8 +48,16 @@
             "user_type": "student"
         },
         "student_1": {
-            "balance": 759.6300000000001,
+            "balance": 759.6200000000001,
             "transactions": [
+                {
+                    "id": "tx_1770261648",
+                    "type": "SPEND",
+                    "amount": 0.01,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 08:50:48",
+                    "details": "Session payment to dr._aris_thorne"
+                },
                 {
                     "id": "tx_1770240675",
                     "type": "SPEND",
@@ -108,8 +116,16 @@
             "user_type": "student"
         },
         "dr._aris_thorne": {
-            "balance": 0.30000000000000004,
+            "balance": 0.31000000000000005,
             "transactions": [
+                {
+                    "id": "tx_1770261649",
+                    "type": "EARN",
+                    "amount": 0.01,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 08:50:48",
+                    "details": "Session payment from student_1"
+                },
                 {
                     "id": "tx_1770240676",
                     "type": "EARN",

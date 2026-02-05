@@ -1545,5 +1545,43 @@
                 "Review text is empty."
             ]
         }
+    },
+    {
+        "timestamp": "2026-02-05T03:20:56.639301",
+        "input": {
+            "review_text": "",
+            "star_rating": 4,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 90,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Review text is empty."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-05T03:21:04.812962",
+        "input": {
+            "review_text": "b",
+            "star_rating": 4,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 90,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Review text is empty."
+            ]
+        }
     }
 ]
