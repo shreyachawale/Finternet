@@ -48,8 +48,40 @@
             "user_type": "student"
         },
         "student_1": {
-            "balance": 759.6200000000001,
+            "balance": 57.19000000000016,
             "transactions": [
+                {
+                    "id": "tx_1770265873",
+                    "type": "SPEND",
+                    "amount": 1.38,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 10:01:13",
+                    "details": "Session payment to dr._aris_thorne"
+                },
+                {
+                    "id": "tx_1770265775",
+                    "type": "WITHDRAW",
+                    "amount": 700.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 09:59:35",
+                    "details": "To Bank: 1234556"
+                },
+                {
+                    "id": "tx_1770262628",
+                    "type": "WITHDRAW",
+                    "amount": 750.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 09:07:08",
+                    "details": "To Bank: 12678456"
+                },
+                {
+                    "id": "tx_1770262551",
+                    "type": "SPEND",
+                    "amount": 1.05,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 09:05:51",
+                    "details": "Session payment to dr._aris_thorne"
+                },
                 {
                     "id": "tx_1770261648",
                     "type": "SPEND",
@@ -116,8 +148,47 @@
             "user_type": "student"
         },
         "dr._aris_thorne": {
-            "balance": 0.31000000000000005,
+            "balance": 2.25,
             "transactions": [
+                {
+                    "id": "tx_1770265874",
+                    "type": "EARN",
+                    "amount": 1.1,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 10:01:13",
+                    "details": "Session payment from student_1"
+                },
+                {
+                    "id": "tx_1770262961",
+                    "type": "WITHDRAW",
+                    "amount": 1.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 09:12:41",
+                    "details": "To Bank: 12345678"
+                },
+                {
+                    "id": "intent_f61ed39f-0bf3-4e6c-b443-d89552136858",
+                    "type": "DEPOSIT",
+                    "amount": 1.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 09:12:22"
+                },
+                {
+                    "id": "tx_1770262744",
+                    "type": "WITHDRAW",
+                    "amount": 1.0,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 09:09:04",
+                    "details": "To Bank: 234567"
+                },
+                {
+                    "id": "tx_1770262552",
+                    "type": "EARN",
+                    "amount": 0.84,
+                    "status": "COMPLETED",
+                    "date": "2026-02-05 09:05:51",
+                    "details": "Session payment from student_1"
+                },
                 {
                     "id": "tx_1770261649",
                     "type": "EARN",

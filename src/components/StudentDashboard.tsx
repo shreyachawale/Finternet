@@ -13,6 +13,10 @@ import {
   Minus,
   ShoppingCart,
   X,
+  BookOpen,
+  CheckCircle,
+  PlayCircle,
+  ArrowRight,
 } from "lucide-react";
 
 interface StudentDashboardProps {
@@ -39,6 +43,10 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
   const [bankAccount, setBankAccount] = useState("");
   const [processing, setProcessing] = useState(false);
 
+  // ---- LEARNING ROADMAP STATE ----
+  const [courses, setCourses] = useState<any[]>([]);
+  const [enrolledCourses, setEnrolledCourses] = useState<any[]>([]);
+
   // ---- FETCH WALLET ----
   const fetchWalletData = async () => {
     try {
@@ -60,6 +68,55 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
     const interval = setInterval(fetchWalletData, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  // ---- FETCH COURSES AND MATCH WITH TRANSACTIONS ----
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        const response = await fetch('/src/data/courses.json');
+        const coursesData = await response.json();
+        setCourses(coursesData);
+
+        // Match courses with transaction history
+        const spendTransactions = transactions.filter(tx => tx.type === "SPEND" && tx.details?.includes("Session payment"));
+        
+        const enrolled = coursesData
+          .filter((course: any) => {
+            // Check if user has paid for this course by matching teacher names
+            const teacherId = course.teacher.toLowerCase().replace(/\s+/g, "_");
+            return spendTransactions.some(tx => tx.details?.includes(teacherId));
+          })
+          .map((course: any) => {
+            // Find all transactions for this course
+            const teacherId = course.teacher.toLowerCase().replace(/\s+/g, "_");
+            const courseTxs = spendTransactions.filter(tx => tx.details?.includes(teacherId));
+            const totalSpent = courseTxs.reduce((sum, tx) => sum + tx.amount, 0);
+            const lastWatched = courseTxs.length > 0 ? courseTxs[0].date : null;
+            
+            // Calculate estimated progress (rough estimate based on spending)
+            const estimatedProgress = Math.min(100, Math.round((totalSpent / course.max_charge) * 100));
+            
+            return {
+              ...course,
+              totalSpent,
+              lastWatched,
+              transactionCount: courseTxs.length,
+              progress: estimatedProgress,
+              status: estimatedProgress >= 80 ? 'completed' : estimatedProgress > 0 ? 'in-progress' : 'started'
+            };
+          })
+          .sort((a, b) => new Date(b.lastWatched).getTime() - new Date(a.lastWatched).getTime());
+
+        setEnrolledCourses(enrolled);
+      } catch (error) {
+        console.error("Failed to load courses:", error);
+      }
+    };
+
+    if (transactions.length > 0) {
+      loadCourses();
+    }
+  }, [transactions]);
 
   // ---- WALLET ACTIONS ----
   const handleDeposit = async () => {
@@ -376,6 +433,143 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
               />
             </div>
           </div>
+        </div>
+
+        {/* LEARNING ROADMAP SECTION */}
+        <div className="bg-white/60 backdrop-blur-xl rounded-3xl border border-white/60 shadow-2xl p-8 mb-8">
+          <div className="mb-6">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
+              <BookOpen className="w-8 h-8 text-purple-500" />
+              Your Learning Roadmap
+            </h2>
+            <p className="text-gray-600">Track your progress across all courses you've started</p>
+          </div>
+
+          {enrolledCourses.length === 0 ? (
+            <div className="text-center py-16">
+              <BookOpen className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 text-lg font-semibold mb-2">No courses started yet</p>
+              <p className="text-gray-400 mb-6">Explore our course library and start learning today!</p>
+              <button
+                onClick={() => onNavigate("discovery")}
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all inline-flex items-center gap-2"
+              >
+                <Sparkles className="w-5 h-5" />
+                Discover Courses
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Progress Overview */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-blue-700">Total Courses</span>
+                    <BookOpen className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <p className="text-3xl font-bold text-blue-900">{enrolledCourses.length}</p>
+                </div>
+                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-green-700">Completed</span>
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                  </div>
+                  <p className="text-3xl font-bold text-green-900">
+                    {enrolledCourses.filter(c => c.status === 'completed').length}
+                  </p>
+                </div>
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-purple-700">In Progress</span>
+                    <PlayCircle className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <p className="text-3xl font-bold text-purple-900">
+                    {enrolledCourses.filter(c => c.status === 'in-progress').length}
+                  </p>
+                </div>
+              </div>
+
+              {/* Course Cards */}
+              <div className="space-y-4">
+                {enrolledCourses.map((course) => (
+                  <div
+                    key={course.id}
+                    className="group relative bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                    onClick={() => onNavigate("recorded", course)}
+                  >
+                    <div className="flex items-start gap-6">
+                      {/* Course Avatar */}
+                      <div className="flex-shrink-0">
+                        <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                          {course.avatar}
+                        </div>
+                      </div>
+
+                      {/* Course Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex-1">
+                            <h3 className="text-xl font-bold text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">
+                              {course.subject}
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-2">with {course.teacher}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {course.status === 'completed' && (
+                              <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center gap-1">
+                                <CheckCircle className="w-3 h-3" />
+                                Completed
+                              </span>
+                            )}
+                            {course.status === 'in-progress' && (
+                              <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full flex items-center gap-1">
+                                <PlayCircle className="w-3 h-3" />
+                                In Progress
+                              </span>
+                            )}
+                            <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+                          </div>
+                        </div>
+
+                        {/* Progress Bar */}
+                        <div className="mb-3">
+                          <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
+                            <span>Progress</span>
+                            <span className="font-semibold">{course.progress}%</span>
+                          </div>
+                          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-500"
+                              style={{ width: `${course.progress}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Stats Row */}
+                        <div className="flex items-center gap-6 text-sm text-gray-600">
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            <span>Last watched: {new Date(course.lastWatched).toLocaleDateString()}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <DollarSign className="w-4 h-4" />
+                            <span>Spent: ${course.totalSpent.toFixed(2)}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                            <span>{course.rating}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Hover Effect Overlay */}
+                    <div className="absolute inset-0 border-2 border-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

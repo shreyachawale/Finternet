@@ -1583,5 +1583,132 @@
                 "Review text is empty."
             ]
         }
+    },
+    {
+        "timestamp": "2026-02-05T03:35:56.194196",
+        "input": {
+            "review_text": "",
+            "star_rating": 4,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 90,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Review text is empty."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-05T03:35:59.489437",
+        "input": {
+            "review_text": "goo",
+            "star_rating": 4,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-05T03:36:00.029361",
+        "input": {
+            "review_text": "good",
+            "star_rating": 4,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.4404,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
+    },
+    {
+        "timestamp": "2026-02-05T04:27:59.686772",
+        "input": {
+            "review_text": "",
+            "star_rating": 4,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 90,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Review text is empty."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-05T04:31:47.146534",
+        "input": {
+            "review_text": "",
+            "star_rating": 4,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 90,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Review text is empty."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-05T04:31:49.950737",
+        "input": {
+            "review_text": "we",
+            "star_rating": 4,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 90,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Review text is empty."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-05T04:31:50.687043",
+        "input": {
+            "review_text": "wekk",
+            "star_rating": 4,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 100,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": []
+        }
     }
 ]

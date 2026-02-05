@@ -110,6 +110,7 @@ export default function RecordedSession({
   const rate = session?.rate ?? 0.15;
   const maxCharge = session?.max_charge ?? Infinity;
   const optimalMaxSec = (session?.recommended_max ?? 20) * 60;
+  const INITIAL_SESSION_FEE = 1/5*maxCharge;
 
   /* ---------------- CONFIG ---------------- */
   const STUDENT_ID = "student_1"; // TODO: Get from auth context
@@ -161,6 +162,7 @@ export default function RecordedSession({
         setFreePeriodActive(false);
         setFreeSecondsWatched(FREE_PREVIEW_SECONDS);
         setFreeCountdown(0);
+        setCost(INITIAL_SESSION_FEE);
       }
     };
 
@@ -197,6 +199,7 @@ export default function RecordedSession({
           // Check if free period has ended
           if (freeSecondsWatched + 1 >= FREE_PREVIEW_SECONDS) {
             setFreePeriodActive(false);
+            setCost((c) => c + INITIAL_SESSION_FEE);
           }
         }
         return; // Don't charge during free period

@@ -740,8 +740,9 @@ async def wallet_withdraw(req: WithdrawRequest):
             raise HTTPException(status_code=400, detail="Insufficient wallet balance")
         
         # Deduct Balance and add transaction
-        wallet["balance"] -= amount
-        add_wallet_transaction(user_id, "WITHDRAW", amount, "COMPLETED", details=f"To Bank: {bank_account}")
+        add_wallet_transaction(user_id, "WITHDRAW", amount, "COMPLETED", 
+                               details=f"To Bank: {bank_account}", 
+                               update_balance=True, balance_delta=-amount)
         
         return {"success": True}
 
@@ -762,8 +763,7 @@ async def wallet_spend(req: SpendRequest):
         if wallet["balance"] < amount:
             raise HTTPException(status_code=400, detail="Insufficient funds")
         
-        wallet["balance"] -= amount
-        add_wallet_transaction(user_id, "SPEND", amount, "COMPLETED")
+        add_wallet_transaction(user_id, "SPEND", amount, "COMPLETED", update_balance=True, balance_delta=-amount)
         
         return {"success": True}
     except HTTPException:
