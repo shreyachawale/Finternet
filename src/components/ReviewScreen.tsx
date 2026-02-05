@@ -204,28 +204,33 @@ export default function ReviewScreen({ data, onNavigate }: ReviewScreenProps) {
     return () => clearTimeout(timeoutId);
   }, [review, rating, data]);
 
-  // 2. INTEGRATION: Call the Wallet System (Python Backend 1)
+  // 2. Submit the review (payment already happened in RecordedSession)
   const handleSubmit = async () => {
     try {
-      // First, process the payment/charge
-      const chargeResponse = await fetch('http://localhost:8000/charge', {
+      // Submit the review to the backend
+      const reviewResponse = await fetch('http://localhost:8000/verify-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: data?.sessionPrice || 20.00 // The cost of the lesson
+          review_text: review,
+          star_rating: rating,
+          watch_time_min: data?.timeUsed ? data.timeUsed / 60 : 15,
+          total_time_min: data?.totalTime || 30
         }),
       });
 
-      if (chargeResponse.ok) {
+      if (reviewResponse.ok) {
         setSubmitted(true);
         setTimeout(() => {
           onNavigate('studentDashboard');
         }, 2000);
       } else {
-        alert("Transaction failed. Please check your balance.");
+        const errorData = await reviewResponse.json();
+        alert(`Review submission failed: ${errorData.detail || 'Please try again'}`);
       }
     } catch (error) {
-      console.error("Payment error:", error);
+      console.error("Review submission error:", error);
+      alert("Failed to submit review. Please try again.");
     }
   };
 
@@ -238,8 +243,8 @@ export default function ReviewScreen({ data, onNavigate }: ReviewScreenProps) {
           <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl mx-auto mb-6 flex items-center justify-center animate-bounce">
             <CheckCircle className="w-12 h-12 text-white" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-3">Review & Payment Successful!</h2>
-          <p className="text-gray-600 mb-2">Funds have been transferred to {data?.teacher}</p>
+          <h2 className="text-3xl font-bold text-gray-800 mb-3">Review Submitted!</h2>
+          <p className="text-gray-600 mb-2">Thank you for your feedback</p>
           <p className="text-sm text-blue-600 font-semibold">+10 Learning Efficiency Points</p>
         </div>
       </div>
@@ -343,7 +348,7 @@ export default function ReviewScreen({ data, onNavigate }: ReviewScreenProps) {
             disabled={rating === 0 || trustData?.status === "Rejected"}
             className="w-full py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {trustData?.status === "Rejected" ? "Review Too Low Quality" : "Submit Review & Pay"}
+            {trustData?.status === "Rejected" ? "Review Too Low Quality" : "Submit Review"}
           </button>
         </div>
       </div>

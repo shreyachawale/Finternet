@@ -280,6 +280,10 @@ import {
   Minus,
   ShoppingCart,
   X,
+  Video,
+  Upload,
+  PlayCircle,
+  Eye,
 } from 'lucide-react';
 
 interface TeacherDashboardProps {
@@ -332,6 +336,9 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
   const [amount, setAmount] = useState("");
   const [bankAccount, setBankAccount] = useState("");
   const [processing, setProcessing] = useState(false);
+
+  // ---- VIDEO LIBRARY STATE ----
+  const [teacherVideos, setTeacherVideos] = useState<any[]>([]);
 
   const earnTransactions = transactions.filter((t) => t.type === "EARN");
 
@@ -391,6 +398,48 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
     const interval = setInterval(fetchWalletData, 2000);
     return () => clearInterval(interval);
   }, [selectedTeacherId]);
+
+  // ---- FETCH TEACHER'S VIDEOS ----
+  useEffect(() => {
+    const loadTeacherVideos = async () => {
+      try {
+        const response = await fetch('/src/data/courses.json');
+        const coursesData = await response.json();
+        
+        // Get the teacher's actual name from the selected ID
+        const teacherName = selectedTeacherId === "dr._aris_thorne" 
+          ? "Dr. Aris Thorne" 
+          : selectedTeacherId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        
+        // Filter courses by this teacher
+        const videos = coursesData.filter((course: any) => 
+          course.teacher.toLowerCase() === teacherName.toLowerCase() ||
+          course.teacher.toLowerCase().replace(/\s+/g, '_') === selectedTeacherId
+        );
+        
+        // Match with earnings from transactions
+        const videosWithEarnings = videos.map((video: any) => {
+          const videoEarnings = transactions
+            .filter(tx => tx.type === "EARN" && tx.details?.toLowerCase().includes('session payment'))
+            .reduce((sum, tx) => sum + tx.amount, 0);
+          
+          return {
+            ...video,
+            totalEarned: videoEarnings,
+            views: video.students || 0,
+          };
+        });
+        
+        setTeacherVideos(videosWithEarnings);
+      } catch (error) {
+        console.error("Failed to load teacher videos:", error);
+      }
+    };
+
+    if (transactions.length > 0) {
+      loadTeacherVideos();
+    }
+  }, [selectedTeacherId, transactions]);
 
   // ---- WALLET ACTIONS ----
   const handleDeposit = async () => {
@@ -723,6 +772,91 @@ export default function TeacherDashboard({ onNavigate }: TeacherDashboardProps) 
               </div>
             </div>
           </div>
+        </div>
+
+        {/* VIDEO LIBRARY SECTION */}
+        <div className="bg-white/60 backdrop-blur-xl rounded-3xl border border-white/60 shadow-2xl p-8 mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
+                <Video className="w-8 h-8 text-purple-500" />
+                Your Video Library
+              </h2>
+              <p className="text-gray-600">Manage and track your course videos</p>
+            </div>
+            <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all inline-flex items-center gap-2">
+              <Upload className="w-5 h-5" />
+              Upload Video
+            </button>
+          </div>
+
+          {teacherVideos.length === 0 ? (
+            <div className="text-center py-16">
+              <Video className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 text-lg font-semibold mb-2">No videos uploaded yet</p>
+              <p className="text-gray-400 mb-6">Start creating content and earning from your expertise!</p>
+              <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all inline-flex items-center gap-2">
+                <Upload className="w-5 h-5" />
+                Upload Your First Video
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {teacherVideos.map((video) => (
+                <div
+                  key={video.id}
+                  className="group relative bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                >
+                  {/* Video Thumbnail */}
+                  <div className="relative aspect-video bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <PlayCircle className="w-16 h-16 text-white/80 group-hover:scale-110 transition-transform" />
+                    <div className="absolute top-3 right-3 px-2 py-1 bg-black/60 backdrop-blur-sm rounded-lg text-white text-xs font-semibold">
+                      {video.total_length_min} min
+                    </div>
+                  </div>
+
+                  {/* Video Info */}
+                  <div className="p-5">
+                    <h3 className="font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                      {video.subject}
+                    </h3>
+                    
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                      <div className="bg-green-50 rounded-xl p-3">
+                        <div className="flex items-center gap-2 mb-1">
+                          <DollarSign className="w-4 h-4 text-green-600" />
+                          <span className="text-xs text-green-700 font-medium">Earned</span>
+                        </div>
+                        <p className="text-lg font-bold text-green-900">${video.totalEarned.toFixed(2)}</p>
+                      </div>
+                      <div className="bg-blue-50 rounded-xl p-3">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Eye className="w-4 h-4 text-blue-600" />
+                          <span className="text-xs text-blue-700 font-medium">Students</span>
+                        </div>
+                        <p className="text-lg font-bold text-blue-900">{video.views}</p>
+                      </div>
+                    </div>
+
+                    {/* Rating & Additional Info */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm font-semibold text-gray-700">{video.rating}</span>
+                      </div>
+                      <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
+                        ${video.rate}/min
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 border-2 border-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

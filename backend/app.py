@@ -529,7 +529,7 @@ async def get_reviews():
 # uvicorn main:app --reload
 
 
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = "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"
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=OPENROUTER_API_KEY,

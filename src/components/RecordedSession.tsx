@@ -144,11 +144,7 @@ export default function RecordedSession({
     if (!video) return;
 
     const onPlay = () => {
-      if (insufficientBalance) {
-        video.pause();
-        alert('Insufficient balance');
-        return;
-      }
+      // Backend will handle balance validation during endSession
       if (!autoStopped) setIsBilling(true);
     };
 
@@ -208,12 +204,8 @@ export default function RecordedSession({
       // After free period, start billing normally
       const nextCharge = rate / 60;
 
-      if (cost + nextCharge > studentBalance) {
-        setIsBilling(false);
-        setInsufficientBalance(true);
-        video.pause();
-        return;
-      }
+      // Note: Backend will handle balance validation during endSession
+      // No local check needed here as it can be stale
 
       setSeconds((s) => s + 1);
 
@@ -389,9 +381,16 @@ export default function RecordedSession({
     }
 
     try {
+      // Refresh balance before charging to get latest value
+      const currentWalletData = await getUserWallet(STUDENT_ID);
+      
+      // Charge the session
       const result = await chargeSession(cost, STUDENT_ID, TEACHER_ID, session?.id);
-      const walletData = await getUserWallet(STUDENT_ID);
+      
+      // Get updated balance after charge
+      const updatedWalletData = await getUserWallet(STUDENT_ID);
 
+      // Navigate to success page
       onNavigate('summary', {
         timeUsed: seconds,
         cost,
@@ -400,7 +399,7 @@ export default function RecordedSession({
         aiNotes: session.outcomes || [],
         valueScore,
         engagement,
-        studentBalance: walletData.balance,
+        studentBalance: updatedWalletData.balance,
         teacherReceived: result.teacher_received,
         platformCut: result.platform_cut,
       });
