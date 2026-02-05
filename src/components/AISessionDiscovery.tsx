@@ -90,7 +90,7 @@ export default function AISessionDiscovery({ onNavigate }: AISessionDiscoveryPro
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold text-blue-700">Murph</span>
+            <span className="text-2xl font-bold text-blue-700">Learn Flow</span>
           </div>
 
           <button

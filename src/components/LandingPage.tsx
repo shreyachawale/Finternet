@@ -1,4 +1,5 @@
 import { Zap, Clock, TrendingUp, Shield, Sparkles } from 'lucide-react';
+import AIDiscovery from './AIDiscovery';
 
 interface LandingPageProps {
   onNavigate: (screen: string) => void;
@@ -36,79 +37,39 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
         </div>
       </nav>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-8 pt-20 pb-32">
-        <div className="text-center mb-16">
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent leading-tight">
-            Pay Only for What You Learn
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-20 pb-32">
+        <div className="absolute top-20 right-[10%] w-[400px] h-[200px] bg-blue-100/40 rounded-full blur-3xl" />
+        <div className="absolute bottom-40 left-[15%] w-[300px] h-[300px] bg-blue-100/30 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-[30%] w-[250px] h-[150px] bg-blue-50/50 rounded-full blur-2xl" />
+
+        <div className="relative z-10 text-center max-w-5xl">
+          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 mb-12">
+            <Sparkles className="w-4 h-4 text-blue-600" />
+            <span className="text-sm font-medium text-blue-900">AI-Powered Learning Marketplace</span>
+          </div>
+
+          <h1 className="text-7xl md:text-8xl lg:text-9xl font-serif font-light text-gray-900 mb-8 leading-[0.95] tracking-tight">
+            Pay only for<br />what you learn
           </h1>
-          <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-            Join live learning sessions and pay per minute. AI ensures every second counts.
+
+          <p className="text-xl md:text-2xl text-gray-600 font-light max-w-2xl mx-auto mb-16 leading-relaxed">
+            Every minute counts. Every lesson matters.<br />
+            Start learning when you're ready, stop when you need.
           </p>
 
-          <button
-            onClick={() => onNavigate('discovery')}
-            className="px-10 py-5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-lg font-semibold rounded-2xl shadow-2xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300 inline-flex items-center space-x-2"
-          >
-            <span>Start Learning Now</span>
-            <Zap className="w-5 h-5" />
-          </button>
-        </div>
-
-        <div className="relative max-w-5xl mx-auto">
-          <div className="bg-white/40 backdrop-blur-xl rounded-3xl border border-white/50 shadow-2xl p-8">
-            <div className="grid grid-cols-3 gap-6">
-              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 text-center transform hover:scale-105 transition-all">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center animate-pulse">
-                  <Clock className="w-8 h-8 text-white" />
-                </div>
-                <div className="text-4xl font-bold text-blue-600 mb-2">00:15:42</div>
-                <div className="text-sm text-gray-600 font-medium">Time Used</div>
-              </div>
-
-              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 text-center transform hover:scale-105 transition-all">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                  <Zap className="w-8 h-8 text-white" />
-                </div>
-                <div className="text-4xl font-bold text-green-600 mb-2">$2.35</div>
-                <div className="text-sm text-gray-600 font-medium">Cost</div>
-              </div>
-
-              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 text-center transform hover:scale-105 transition-all">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                  <TrendingUp className="w-8 h-8 text-white" />
-                </div>
-                <div className="text-4xl font-bold text-purple-600 mb-2">94%</div>
-                <div className="text-sm text-gray-600 font-medium">Value Score</div>
-              </div>
-            </div>
+          <div className="flex gap-4 justify-center mb-20">
+            <button 
+              onClick={() => onNavigate('discovery')}
+              className="px-8 py-4 bg-gray-900 text-white rounded-full text-lg font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/10"
+            >
+              Start Learning
+            </button>
           </div>
         </div>
+      </section>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 max-w-6xl mx-auto">
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-white/60">
-            <Shield className="w-10 h-10 text-blue-500 mb-3" />
-            <h3 className="font-bold text-gray-800 mb-2">90s Risk-Free</h3>
-            <p className="text-sm text-gray-600">Preview before you pay</p>
-          </div>
-
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-white/60">
-            <Sparkles className="w-10 h-10 text-blue-500 mb-3" />
-            <h3 className="font-bold text-gray-800 mb-2">AI Assistant</h3>
-            <p className="text-sm text-gray-600">Smart learning guidance</p>
-          </div>
-
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-white/60">
-            <TrendingUp className="w-10 h-10 text-blue-500 mb-3" />
-            <h3 className="font-bold text-gray-800 mb-2">Value Tracking</h3>
-            <p className="text-sm text-gray-600">Real-time effectiveness</p>
-          </div>
-
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-white/60">
-            <Zap className="w-10 h-10 text-blue-500 mb-3" />
-            <h3 className="font-bold text-gray-800 mb-2">Zero Overhead</h3>
-            <p className="text-sm text-gray-600">Pure learning time</p>
-          </div>
-        </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-8 pb-32">
+        <AIDiscovery/>
       </div>
     </div>
   );
