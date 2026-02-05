@@ -1488,5 +1488,62 @@
                 "Extreme rating with no explanation is suspicious."
             ]
         }
+    },
+    {
+        "timestamp": "2026-02-05T02:54:08.288856",
+        "input": {
+            "review_text": "",
+            "star_rating": 2,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 90,
+            "is_genuine": true,
+            "sentiment_score": 0.0,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Review text is empty."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-05T02:54:10.731468",
+        "input": {
+            "review_text": "ok",
+            "star_rating": 2,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 90,
+            "is_genuine": true,
+            "sentiment_score": 0.296,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Review text is empty."
+            ]
+        }
+    },
+    {
+        "timestamp": "2026-02-05T02:54:12.583527",
+        "input": {
+            "review_text": "ok ",
+            "star_rating": 2,
+            "watch_time_min": 15.0,
+            "total_time_min": 30.0
+        },
+        "result": {
+            "status": "Trusted",
+            "trust_score": 90,
+            "is_genuine": true,
+            "sentiment_score": 0.296,
+            "watch_percentage": 50.0,
+            "flags": [
+                "Review text is empty."
+            ]
+        }
     }
 ]

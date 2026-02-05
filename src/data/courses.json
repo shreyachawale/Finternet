@@ -149,5 +149,975 @@
     "instructor_bio": "Dr. Aris Thorne is a Senior Data Scientist with a PhD in Statistics and 8 years of industry experience at top-tier tech firms.",
 
     "why_this_fits": "Perfect for refreshing core ML concepts or debugging specific model intuition in under 20 minutes."
+  },
+
+  {
+    "id": 5,
+    "teacher": "Amina Okafor",
+    "subject": "SEO - Keyword Research Mastery",
+    "description": "A high-impact session on finding 'low-hanging fruit' keywords. Learn how to use search intent and competition analysis to rank faster on Google.",
+    "rate": 0.18,
+    "rating": 4.92,
+    "students": 1240,
+    "avatar": "AO",
+    "verified": true,
+    "youtubeEmbedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ", 
+    "videoUrl": "/videos/seo-keyword-research.mp4",
+    "tags": ["marketing", "seo", "business", "content-strategy"],
+    "level": "beginner-intermediate",
+    "outcomes": [
+      "Identify high-volume, low-competition keywords",
+      "Map keywords to specific user intent stages",
+      "Analyze competitor keyword gaps"
+    ],
+    "recommended_min": 10,
+    "recommended_max": 20,
+    "total_length_min": 38,
+    "max_charge": 3.6,
+    "recorded": true,
+    "language": "English",
+    "last_updated": "Feb 2026",
+    "prerequisites": "Access to a computer and basic understanding of what a blog is",
+    "learning_style": "Screen-share walkthrough + Strategy breakdown",
+    "instructor_bio": "Amina Okafor is a former Head of SEO for a global SaaS brand with 10 years of experience in organic growth.",
+    "why_this_fits": "Focuses on immediate ROI. You'll have a list of target keywords by the 15-minute mark."
+  },
+
+  {
+    "id": 6,
+    "teacher": "Liam Nguyen",
+    "subject": "Tailwind CSS - Rapid UI Prototyping",
+    "description": "Stop writing custom CSS files. This session teaches you how to build a fully responsive landing page hero section in minutes using utility-first classes.",
+    "rate": 0.20,
+    "rating": 4.88,
+    "students": 2105,
+    "avatar": "LN",
+    "verified": true,
+    "youtubeEmbedUrl": "https://www.youtube.com/embed/m7OWXtbiXX8", 
+    "videoUrl": "/videos/tailwind-css-basics.mp4",
+    "tags": ["web-development", "css", "frontend", "ui-design"],
+    "level": "intermediate",
+    "outcomes": [
+      "Master the utility-first workflow",
+      "Implement responsive design without media queries",
+      "Configure custom themes and spacing"
+    ],
+    "recommended_min": 15,
+    "recommended_max": 25,
+    "total_length_min": 50,
+    "max_charge": 5.0,
+    "recorded": true,
+    "language": "English",
+    "last_updated": "Jan 2026",
+    "prerequisites": "Basic HTML and CSS knowledge",
+    "learning_style": "Live coding + Visual breakdown",
+    "instructor_bio": "Liam Nguyen is a Senior Frontend Engineer and open-source contributor to several UI component libraries.",
+    "why_this_fits": "Perfect for developers who want to speed up their styling workflow without the bloat of traditional frameworks."
+  },
+
+  {
+    "id": 7,
+    "teacher": "David Moretti",
+    "subject": "Investing 101 - Index Funds & ETFs",
+    "description": "Cut through the noise of the stock market. This session explains how to build a 'lazy' portfolio using low-cost index funds and ETFs for long-term wealth building.",
+    "rate": 0.22,
+    "rating": 4.95,
+    "students": 3150,
+    "avatar": "DM",
+    "verified": true,
+    "youtubeEmbedUrl": "https://www.youtube.com/embed/P6S9H-T-kY8", 
+    "videoUrl": "/videos/investing-index-funds.mp4",
+    "tags": ["finance", "investing", "wealth-management", "passive-income"],
+    "level": "beginner",
+    "outcomes": [
+      "Understand the difference between active and passive investing",
+      "Calculate the impact of expense ratios on long-term returns",
+      "Select your first 3-fund portfolio"
+    ],
+    "recommended_min": 12,
+    "recommended_max": 20,
+    "total_length_min": 42,
+    "max_charge": 4.4,
+    "recorded": true,
+    "language": "English",
+    "last_updated": "Feb 2026",
+    "prerequisites": "None",
+    "learning_style": "Data-driven slides + Case studies",
+    "instructor_bio": "David Moretti is a Chartered Financial Analyst (CFA) with a passion for making financial literacy accessible to everyone.",
+    "why_this_fits": "Demystifies complex jargon into simple steps you can execute in a single afternoon."
+  },
+
+  {
+    "id": 8,
+    "teacher": "Dr. Kenji Sato",
+    "subject": "Cybersecurity Foundations - The CIA Triad & Threat Defense",
+    "description": "Learn the core principles of digital protection. This session breaks down the CIA Triad (Confidentiality, Integrity, Availability) and provides a practical guide to defending against modern phishing and malware attacks.",
+    "rate": 0.25,
+    "rating": 4.94,
+    "students": 1580,
+    "avatar": "KS",
+    "verified": true,
+
+    "youtubeEmbedUrl": "https://www.youtube.com/embed/In86Yv_8Rpw",
+    "videoUrl": "/videos/cybersecurity-fundamentals.mp4",
+
+    "tags": ["cybersecurity", "it-security", "privacy", "network-safety"],
+    "level": "beginner",
+
+    "outcomes": [
+      "Apply the CIA Triad to personal and professional data",
+      "Identify and neutralize sophisticated phishing attempts",
+      "Configure basic firewall and multi-factor authentication (MFA) settings"
+    ],
+
+    "recommended_min": 15,
+    "recommended_max": 25,
+    "total_length_min": 45,
+    "max_charge": 6.25,
+
+    "recorded": true,
+    "language": "English",
+    "last_updated": "Feb 2026",
+    "prerequisites": "Basic computer literacy",
+    "learning_style": "Scenario-based simulation + Technical walkthrough",
+    "instructor_bio": "Dr. Kenji Sato is a cybersecurity researcher with 15 years of experience in threat intelligence and a consultant for Fortune 500 companies.",
+
+    "why_this_fits": "Provides immediate, actionable steps to harden your digital footprint in under 20 minutes."
+  },
+
+  {
+  "id": 9,
+  "teacher": "Julianna Velez",
+  "subject": "Photography - Composition & The Rule of Thirds",
+  "description": "Stop taking 'flat' photos. Learn how to use the Rule of Thirds, leading lines, and framing to create depth and tell a story with every click of the shutter.",
+  "rate": 0.15,
+  "rating": 4.91,
+  "students": 2430,
+  "avatar": "JV",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/tyVrCznvNXM",
+  "videoUrl": "/videos/photography-composition.mp4",
+
+  "tags": ["photography", "art", "visual-storytelling", "creative"],
+  "level": "beginner",
+
+  "outcomes": [
+    "Apply the Rule of Thirds to any scene instantly",
+    "Identify and use natural 'leading lines' to guide the viewer's eye",
+    "Create a 'frame within a frame' to add professional depth"
+  ],
+
+  "recommended_min": 10,
+  "recommended_max": 18,
+  "total_length_min": 32,
+  "max_charge": 2.7,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Jan 2026",
+  "prerequisites": "Any camera (even a smartphone) and an eye for detail",
+  "learning_style": "Visual examples + 'Before and After' comparisons",
+  "instructor_bio": "Julianna Velez is an award-winning travel photographer whose work has been featured in National Geographic and Vogue.",
+
+  "why_this_fits": "Practical and visual. You'll see an immediate improvement in your very next photo after just 10 minutes of guidance."
+  },
+
+  {
+  "id": 10,
+  "teacher": "Julian Thorne",
+  "subject": "Public Speaking - Mastering the Hook",
+  "description": "The first 60 seconds of your speech determine if the audience listens or tunes out. Learn three proven 'hooks' to grab attention and build instant rapport.",
+  "rate": 0.22,
+  "rating": 4.89,
+  "students": 1950,
+  "avatar": "JT",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/i68a6M5FFBc",
+  "videoUrl": "/videos/public-speaking-hooks.mp4",
+
+  "tags": ["communication", "public-speaking", "leadership", "soft-skills"],
+  "level": "all-levels",
+
+  "outcomes": [
+    "Design a high-impact opening using the 'Question' or 'Story' hook",
+    "Master the 'Power Pause' to command the room",
+    "Reduce vocal fillers (um, ah) through rhythmic breathing"
+  ],
+
+  "recommended_min": 8,
+  "recommended_max": 15,
+  "total_length_min": 28,
+  "max_charge": 3.3,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "A speech or presentation topic in mind",
+  "learning_style": "Performance analysis + drills",
+  "instructor_bio": "Julian Thorne is a professional speechwriter and two-time TEDx speaker with a background in classical theater.",
+
+  "why_this_fits": "Short, punchy, and perfect for a last-minute polish before you step onto the stage."
+  },
+
+  {
+  "id": 11,
+  "teacher": "Dr. Clara Xiao",
+  "subject": "Prompt Engineering - The Chain-of-Thought Framework",
+  "description": "Stop getting generic AI responses. Learn the 'Chain-of-Thought' (CoT) technique to force LLMs to reason step-by-step, drastically improving accuracy for complex logic and coding tasks.",
+  "rate": 0.28,
+  "rating": 4.97,
+  "students": 4100,
+  "avatar": "CX",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/jC4v5AS46Dc",
+  "videoUrl": "/videos/prompt-engineering-cot.mp4",
+
+  "tags": ["ai", "prompt-engineering", "productivity", "llm"],
+  "level": "intermediate",
+
+  "outcomes": [
+    "Implement Few-Shot and Zero-Shot Chain-of-Thought prompting",
+    "Reduce 'hallucinations' in AI-generated technical content",
+    "Build a reusable prompt library for complex workflows"
+  ],
+
+  "recommended_min": 12,
+  "recommended_max": 20,
+  "total_length_min": 35,
+  "max_charge": 5.6,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "Basic experience with ChatGPT, Gemini, or Claude",
+  "learning_style": "Comparative 'Prompt Lab' walkthrough",
+  "instructor_bio": "Dr. Clara Xiao is an AI Research Scientist and former consultant for OpenAI, specializing in human-AI interaction.",
+
+  "why_this_fits": "Immediately upgrades the quality of your AI output. You'll see the 'reasoning' difference in your first try."
+  },
+
+  {
+  "id": 12,
+  "teacher": "Chef Mateo Rossi",
+  "subject": "Healthy Cooking - Knife Skills & Prep Efficiency",
+  "description": "The foundation of healthy eating is home cooking. Learn the four essential knife cuts (Julienne, Dice, Chiffonade, and Mince) to slash your meal prep time in half and cook like a professional.",
+  "rate": 0.14,
+  "rating": 4.93,
+  "students": 3820,
+  "avatar": "MR",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/G-Fg7l7G1zw",
+  "videoUrl": "/videos/knife-skills-mastery.mp4",
+
+  "tags": ["cooking", "wellness", "lifestyle", "culinary-arts"],
+  "level": "beginner",
+
+  "outcomes": [
+    "Execute the 'claw' grip for maximum safety and speed",
+    "Master the four essential cuts for vegetables and herbs",
+    "Identify how to sharpen and maintain a chef's knife"
+  ],
+
+  "recommended_min": 10,
+  "recommended_max": 15,
+  "total_length_min": 25,
+  "max_charge": 2.1,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Jan 2026",
+  "prerequisites": "A chef's knife and a cutting board",
+  "learning_style": "Top-down demonstration + real-time practice",
+  "instructor_bio": "Chef Mateo Rossi is a Michelin-star trained chef and wellness advocate who focuses on making gourmet techniques accessible for home cooks.",
+
+  "why_this_fits": "High utility. Learning to chop efficiently is the single biggest barrier to consistent healthy eating at home."
+  },
+
+  {
+  "id": 13,
+  "teacher": "Marcus Thorne",
+  "subject": "Excel - Power Query for Data Cleaning",
+  "description": "Stop doing the same manual cleanup every Monday. Learn how to use Power Query to automate the process of importing, transforming, and merging messy data sets with zero coding required.",
+  "rate": 0.24,
+  "rating": 4.96,
+  "students": 5600,
+  "avatar": "MT",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/BLm60Lof678",
+  "videoUrl": "/videos/excel-power-query.mp4",
+
+  "tags": ["data-analytics", "excel", "productivity", "business-intelligence"],
+  "level": "intermediate",
+
+  "outcomes": [
+    "Connect Excel to external data sources (CSV, Web, SQL)",
+    "Unpivot columns and split data by delimiters automatically",
+    "Build a 'Refreshable' workflow that handles new data in one click"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 25,
+  "total_length_min": 48,
+  "max_charge": 6.0,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "Basic understanding of Excel tables and formulas",
+  "learning_style": "Screen-share walkthrough + downloadable practice files",
+  "instructor_bio": "Marcus Thorne is a Business Intelligence Lead at a Fortune 500 company and an Excel MVP with over 15 years of experience.",
+
+  "why_this_fits": "This is a 'career-multiplier' skill. Most users save 3-5 hours of manual work per week after learning this 20-minute workflow."
+  },
+
+  {
+  "id": 14,
+  "teacher": "Sanjay Gupta",
+  "subject": "AWS Essentials - EC2, S3, and RDS Simplified",
+  "description": "Cloud computing can be overwhelming. This session demystifies the three core pillars of AWS: Compute (EC2), Storage (S3), and Databases (RDS), teaching you when to use which and how they talk to each other.",
+  "rate": 0.30,
+  "rating": 4.91,
+  "students": 2840,
+  "avatar": "SG",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/Z3Sddosf7M0",
+  "videoUrl": "/videos/aws-essentials.mp4",
+
+  "tags": ["cloud-computing", "aws", "devops", "infrastructure"],
+  "level": "beginner-intermediate",
+
+  "outcomes": [
+    "Differentiate between IaaS, PaaS, and SaaS in an AWS context",
+    "Launch and connect to a Linux EC2 instance",
+    "Understand S3 bucket policies and basic data durability"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 22,
+  "total_length_min": 52,
+  "max_charge": 6.6,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "Basic understanding of networking (IP addresses, ports)",
+  "learning_style": "Architectural diagrams + Console walkthrough",
+  "instructor_bio": "Sanjay Gupta is an AWS Certified Solutions Architect Professional with a decade of experience migrating legacy systems to the cloud.",
+
+  "why_this_fits": "Perfect for the '15-minute architect.' You'll walk away with a clear mental map of how modern web apps are actually hosted."
+  },
+
+  {
+  "id": 15,
+  "teacher": "Elena Vance",
+  "subject": "Figma - Mastering Auto Layout",
+  "description": "Stop manually resizing buttons and cards. Learn Auto Layout to create truly responsive components that grow with your content, just like real CSS Flexbox.",
+  "rate": 0.26,
+  "rating": 4.98,
+  "students": 3200,
+  "avatar": "EV",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/NrO0CBBfSno",
+  "videoUrl": "/videos/figma-auto-layout.mp4",
+
+  "tags": ["design", "ui-ux", "figma", "product-design"],
+  "level": "intermediate",
+
+  "outcomes": [
+    "Build responsive navigation bars and buttons using constraints",
+    "Understand 'Fill', 'Hug', and 'Fixed' sizing properties",
+    "Create complex, nested layouts that adapt to any screen size"
+  ],
+
+  "recommended_min": 12,
+  "recommended_max": 20,
+  "total_length_min": 40,
+  "max_charge": 5.2,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "Basic familiarity with Figma's interface",
+  "learning_style": "Hands-on component building + 'Stress testing' designs",
+  "instructor_bio": "Elena Vance is a Product Designer at a top-tier fintech firm and a design systems consultant for several startups.",
+
+  "why_this_fits": "This is the single most important skill for modern designers. It bridges the gap between static art and actual development."
+  },
+
+  {
+  "id": 16,
+  "teacher": "Arjun Mehta",
+  "subject": "Docker - Containerization Essentials",
+  "description": "Stop struggling with environment setup. Learn how to package your application and all its dependencies into a single container that runs anywhere—from your laptop to the cloud.",
+  "rate": 0.28,
+  "rating": 4.87,
+  "students": 3120,
+  "avatar": "AM",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/gAkwW2tuIqE",
+  "videoUrl": "/videos/docker-basics.mp4",
+
+  "tags": ["devops", "docker", "software-engineering", "backend"],
+  "level": "beginner-intermediate",
+
+  "outcomes": [
+    "Write a Dockerfile for a basic Node.js or Python app",
+    "Understand the difference between Images and Containers",
+    "Use Docker Hub to pull and run pre-configured software"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 25,
+  "total_length_min": 45,
+  "max_charge": 7.0,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Jan 2026",
+  "prerequisites": "Basic command line (terminal) knowledge",
+  "learning_style": "Terminal-first walkthrough + Architectural diagrams",
+  "instructor_bio": "Arjun Mehta is a Senior DevOps Engineer with 7 years of experience in scaling microservices architecture.",
+
+  "why_this_fits": "Containerization is a non-negotiable skill for modern backend development. You'll have your first app 'dockerized' by the 20-minute mark."
+  },
+
+  {
+  "id": 17,
+  "teacher": "Sam Yang",
+  "subject": "Digital Illustration - Lighting and Value for Beginners",
+  "description": "Stop struggling with muddy colors. Learn how to use 'Values' to create depth and focus in your digital paintings, ensuring your characters pop regardless of the color palette you choose.",
+  "rate": 0.22,
+  "rating": 4.98,
+  "students": 12500,
+  "avatar": "SY",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/OzemCeywKOM",
+  "videoUrl": "/videos/digital-art-essentials.mp4",
+
+  "tags": ["digital-art", "illustration", "painting", "creative"],
+  "level": "beginner-intermediate",
+
+  "outcomes": [
+    "Differentiate between Hue, Saturation, and Value",
+    "Use 'Value Checks' in your software to identify lighting issues",
+    "Apply basic shading techniques to 3D forms (spheres, cubes)"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 25,
+  "total_length_min": 42,
+  "max_charge": 5.5,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "Access to a drawing tablet and digital software (Procreate, Photoshop, or Krita)",
+  "learning_style": "Step-by-step painting + simplified theory",
+  "instructor_bio": "Sam Yang is a renowned digital artist known for his 'SamDoesArts' style and has mentored thousands of aspiring illustrators worldwide.",
+
+  "why_this_fits": "Lighting is often the biggest hurdle for beginners. This session simplifies 'Values' so you can see immediate improvement in the depth of your art."
+  },
+
+  {
+  "id": 18,
+  "teacher": "Sofia Martinez",
+  "subject": "React Native - Building with Expo & Flexbox",
+  "description": "Skip the complex native setup. Learn how to use Expo to launch your first mobile app in minutes. We'll focus on mastering Flexbox for mobile—ensuring your layout looks perfect on both the latest iPhone and older Android devices.",
+  "rate": 0.24,
+  "rating": 4.96,
+  "students": 8400,
+  "avatar": "SM",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/G1XiiXTQHSE",
+  "videoUrl": "/videos/react-native-expo.mp4",
+
+  "tags": ["mobile-development", "react-native", "javascript", "expo"],
+  "level": "beginner",
+
+  "outcomes": [
+    "Set up an Expo development environment in under 5 minutes",
+    "Master 'flexDirection', 'justifyContent', and 'alignItems' for mobile",
+    "Build a scrollable list of interactive cards with 'FlatList'"
+  ],
+
+  "recommended_min": 18,
+  "recommended_max": 30,
+  "total_length_min": 120,
+  "max_charge": 7.2,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Jan 2026",
+  "prerequisites": "Intermediate knowledge of React and JavaScript",
+  "learning_style": "Real-time coding + mobile mirroring (Expo Go)",
+  "instructor_bio": "Sofia Martinez is a Senior Mobile Lead who has shipped over 15 high-performance apps using React Native for major retail brands.",
+
+  "why_this_fits": "High efficiency for React developers. You move from web concepts to a running mobile prototype within your first 20 minutes of engagement."
+  },
+
+  {
+  "id": 19,
+  "teacher": "Ankur Prajapati",
+  "subject": "Node.js & Express - Building RESTful APIs",
+  "description": "Unlock the power of the server-side. This session takes you from 'Zero to API,' teaching you how to handle HTTP requests, implement routing, and connect your logic to a database using the Express framework.",
+  "rate": 0.25,
+  "rating": 4.92,
+  "students": 12450,
+  "avatar": "AP",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/0IciwnJ6PJI",
+  "videoUrl": "/videos/nodejs-backend-express.mp4",
+
+  "tags": ["backend", "nodejs", "express", "javascript", "api"],
+  "level": "beginner-intermediate",
+
+  "outcomes": [
+    "Understand the Node.js Event Loop and Non-blocking I/O",
+    "Create a web server and handle GET, POST, PUT, and DELETE requests",
+    "Implement Middleware for authentication and error handling"
+  ],
+
+  "recommended_min": 20,
+  "recommended_max": 35,
+  "total_length_min": 480,
+  "max_charge": 8.75,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "Basic JavaScript (ES6+) knowledge",
+  "learning_style": "Project-based coding + Architectural deep-dives",
+  "instructor_bio": "Ankur Prajapati is a veteran Backend Engineer and educator who has helped thousands of students transition into high-paying engineering roles.",
+
+  "why_this_fits": "Mastering Express is the fastest way to become a productive backend developer. You'll move from basic scripts to a structured API architecture in one sitting."
+  },
+
+  {
+  "id": 20,
+  "teacher": "Alaj Daniel",
+  "subject": "DaVinci Resolve - Cinematic Editing & Color Grading",
+  "description": "Transform your raw footage into professional film. This session covers the 'Cut' and 'Edit' pages for efficient storytelling, followed by a deep dive into DaVinci’s legendary nodes for color correction and grading.",
+  "rate": 0.22,
+  "rating": 4.97,
+  "students": 5400,
+  "avatar": "AD",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/0A-yJY2AbJs",
+  "videoUrl": "/videos/davinci-resolve-basics.mp4",
+
+  "tags": ["video-editing", "color-grading", "davinci-resolve", "filmmaking"],
+  "level": "beginner-intermediate",
+
+  "outcomes": [
+    "Master the node-based color correction workflow",
+    "Use Scopes (Parade, Waveform) to balance exposure and white balance",
+    "Export high-quality 4K renders optimized for YouTube and social media"
+  ],
+
+  "recommended_min": 20,
+  "recommended_max": 35,
+  "total_length_min": 140,
+  "max_charge": 7.7,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Jan 2026",
+  "prerequisites": "A computer capable of running DaVinci Resolve (free or Studio version)",
+  "learning_style": "Project-based editing + Technical color theory",
+  "instructor_bio": "Alaj Daniel is a film director and professional colorist passionate about teaching the 'Hollywood look' to independent creators.",
+
+  "why_this_fits": "Essential for 'full-stack' content creators. You'll learn to manage the entire pipeline from raw import to final color-graded export."
+  },
+
+  {
+  "id": 21,
+  "teacher": "Dr. Uohna Thiessen",
+  "subject": "Scikit-Learn - Building Your First Classification Model",
+  "description": "Move from raw data to real-world predictions. This session walks you through the 5-step machine learning workflow: loading data, splitting for training/testing, instantiating a model, fitting the data, and evaluating accuracy.",
+  "rate": 0.28,
+  "rating": 4.95,
+  "students": 6200,
+  "avatar": "UT",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/CaRcRk2c8bM",
+  "videoUrl": "/videos/scikit-learn-workflow.mp4",
+
+  "tags": ["data-science", "machine-learning", "python", "scikit-learn"],
+  "level": "beginner-intermediate",
+
+  "outcomes": [
+    "Implement a complete Train-Test split to prevent model overfitting",
+    "Build and train a Random Forest classifier in under 10 lines of code",
+    "Interpret accuracy, precision, and recall metrics to gauge performance"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 25,
+  "total_length_min": 45,
+  "max_charge": 7.0,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Mar 2025",
+  "prerequisites": "Basic Python and familiarity with Pandas DataFrames",
+  "learning_style": "Hands-on workflow + metric breakdown",
+  "instructor_bio": "Dr. Uohna Thiessen is an AI strategist and data scientist known for simplifying complex statistical concepts for engineering teams.",
+
+  "why_this_fits": "Practical and foundational. It strips away the 'magic' of AI and gives you a repeatable template for solving prediction problems."
+  },
+
+  {
+  "id": 22,
+  "teacher": "Slobodan Gajic",
+  "subject": "Next.js - Server vs. Client Components",
+  "description": "Stop putting 'use client' at the top of every file. Learn the React Server Components (RSC) architecture to keep your JavaScript bundles small and your data fetching lightning-fast by executing logic directly on the server.",
+  "rate": 0.26,
+  "rating": 4.94,
+  "students": 9200,
+  "avatar": "SG",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/2rk0WpbyxuI",
+  "videoUrl": "/videos/nextjs-server-client.mp4",
+
+  "tags": ["web-development", "nextjs", "react", "fullstack"],
+  "level": "intermediate",
+
+  "outcomes": [
+    "Differentiate when to use Server vs. Client components",
+    "Fetch data securely in async Server Components without 'useEffect'",
+    "Pass data across the 'Network Boundary' using serialization-safe props"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 25,
+  "total_length_min": 55,
+  "max_charge": 6.5,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "Proficiency in React (hooks) and basic Node.js",
+  "learning_style": "Conceptual diagrams + Comparative code labs",
+  "instructor_bio": "Slobodan Gajic is a Full-Stack Educator and Software Architect specializing in high-performance React frameworks.",
+
+  "why_this_fits": "Essential for modern React developers. Understanding this 'Hybrid' approach is the difference between a slow, bloated app and a production-grade Next.js site."
+  },
+
+  {
+  "id": 23,
+  "teacher": "Chloe Valmont",
+  "subject": "Email Marketing - High-Conversion Automation Flows",
+  "description": "Stop manual blasting. Learn how to build 'evergreen' email sequences—like the Welcome Series and Abandoned Cart flow—that nurture leads and generate sales while you sleep.",
+  "rate": 0.20,
+  "rating": 4.86,
+  "students": 7100,
+  "avatar": "CV",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/SshM9W8p76E",
+  "videoUrl": "/videos/email-marketing-automation.mp4",
+
+  "tags": ["marketing", "business", "automation", "copywriting"],
+  "level": "beginner-intermediate",
+
+  "outcomes": [
+    "Map out a 5-step automated 'Welcome Sequence' that builds trust",
+    "Implement behavioral triggers (e.g., clicks, page visits) to segment your list",
+    "Write subject lines that achieve 40%+ open rates using psychological hooks"
+  ],
+
+  "recommended_min": 12,
+  "recommended_max": 22,
+  "total_length_min": 38,
+  "max_charge": 4.4,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Jan 2026",
+  "prerequisites": "Access to an Email Service Provider (ESP) like Mailchimp, Klaviyo, or Beehiiv",
+  "learning_style": "Flowchart strategy + Live dashboard walkthrough",
+  "instructor_bio": "Chloe Valmont is a Retention Marketing Expert who has generated over $50M in attributed revenue for e-commerce brands.",
+
+  "why_this_fits": "Practical and scalable. Once these flows are built, they become a permanent asset for your business with zero recurring effort."
+  },
+
+  {
+  "id": 24,
+  "teacher": "Alex the Analyst",
+  "subject": "SQL Foundations - Mastering Joins & Relationships",
+  "description": "Stop looking at isolated tables. Learn how to combine data from multiple sources using INNER, LEFT, and RIGHT joins to answer complex business questions like 'Which customers haven't made a purchase in 30 days?'",
+  "rate": 0.22,
+  "rating": 4.99,
+  "students": 15400,
+  "avatar": "AA",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/9Pzj7Aj25lw",
+  "videoUrl": "/videos/sql-joins-mastery.mp4",
+
+  "tags": ["sql", "data-analytics", "databases", "backend"],
+  "level": "beginner",
+
+  "outcomes": [
+    "Visualize and implement the 4 primary types of SQL Joins",
+    "Write 'Aggregate' queries using GROUP BY and HAVING",
+    "Identify 'Primary Keys' vs 'Foreign Keys' to understand table relationships"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 25,
+  "total_length_min": 42,
+  "max_charge": 5.5,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "None (A basic understanding of spreadsheets helps)",
+  "learning_style": "Live query building + Visual Venn diagrams",
+  "instructor_bio": "Alex is a world-renowned data educator who specializes in breaking down complex data tools into manageable, job-ready skills.",
+
+  "why_this_fits": "SQL is the highest-leverage skill for any office-based role. You'll move from 'requesting data' to 'extracting insights' in just 20 minutes."
+  },
+
+  {
+  "id": 25,
+  "teacher": "Thomas Frank",
+  "subject": "Notion Systems - Building a Second Brain",
+  "description": "Stop losing track of your ideas. Learn how to build a 'Second Brain' in Notion using linked databases, custom properties, and automated templates to organize your projects, tasks, and knowledge in one unified system.",
+  "rate": 0.18,
+  "rating": 4.97,
+  "students": 22000,
+  "avatar": "TF",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/SgS6-iKcl5I",
+  "videoUrl": "/videos/notion-second-brain.mp4",
+
+  "tags": ["productivity", "notion", "organization", "workflow"],
+  "level": "intermediate",
+
+  "outcomes": [
+    "Create a master 'Tasks' database with relational links to 'Projects'",
+    "Build custom 'Formula' properties to track progress bars and deadlines",
+    "Design a 'Dashboard' view using linked views and filters for daily focus"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 25,
+  "total_length_min": 60,
+  "max_charge": 4.5,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "A free Notion account and a basic understanding of blocks",
+  "learning_style": "System-building walkthrough + Template sharing",
+  "instructor_bio": "Thomas Frank is a productivity expert and YouTuber who specializes in helping people build better systems for work and life.",
+
+  "why_this_fits": "High organizational ROI. You'll move from a cluttered list of notes to a structured system that actively supports your goals."
+  },
+
+  {
+  "id": 26,
+  "teacher": "Rachel Tobac",
+  "subject": "Personal Security - Hardening Your Digital Identity",
+  "description": "Stop being an easy target. This session teaches you how to eliminate 'password fatigue' using managers and why SMS-based 2FA is no longer enough. We'll set up hardware keys and authenticator apps to lock down your most sensitive accounts.",
+  "rate": 0.20,
+  "rating": 4.98,
+  "students": 9800,
+  "avatar": "RT",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/6m6v_LpG_N0", 
+  "videoUrl": "/videos/personal-cybersecurity-hardening.mp4",
+
+  "tags": ["cybersecurity", "privacy", "identity-protection", "2fa"],
+  "level": "beginner",
+
+  "outcomes": [
+    "Migrate from reused passwords to a Zero-Knowledge Password Manager",
+    "Disable SMS 2FA and replace it with TOTP (Authenticator) or WebAuthn (YubiKey)",
+    "Perform a 'Privacy Audit' on your primary email and banking accounts"
+  ],
+
+  "recommended_min": 10,
+  "recommended_max": 20,
+  "total_length_min": 35,
+  "max_charge": 4.0,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "A smartphone and a primary email account you want to secure",
+  "learning_style": "Security walkthrough + Step-by-step setup",
+  "instructor_bio": "Rachel Tobac is a world-renowned 'Ethical Hacker' and CEO of Redpoint Cybersecurity, specializing in social engineering and identity defense.",
+
+  "why_this_fits": "High peace-of-mind ROI. These small structural changes make it nearly impossible for hackers to breach your accounts via standard phishing."
+  },
+
+  {
+  "id": 26,
+  "teacher": "Rachel Tobac",
+  "subject": "Personal Security - Hardening Your Digital Identity",
+  "description": "Stop being an easy target. This session teaches you how to eliminate 'password fatigue' using managers and why SMS-based 2FA is no longer enough. We'll set up hardware keys and authenticator apps to lock down your most sensitive accounts.",
+  "rate": 0.20,
+  "rating": 4.98,
+  "students": 9800,
+  "avatar": "RT",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/6m6v_LpG_N0", 
+  "videoUrl": "/videos/personal-cybersecurity-hardening.mp4",
+
+  "tags": ["cybersecurity", "privacy", "identity-protection", "2fa"],
+  "level": "beginner",
+
+  "outcomes": [
+    "Migrate from reused passwords to a Zero-Knowledge Password Manager",
+    "Disable SMS 2FA and replace it with TOTP (Authenticator) or WebAuthn (YubiKey)",
+    "Perform a 'Privacy Audit' on your primary email and banking accounts"
+  ],
+
+  "recommended_min": 10,
+  "recommended_max": 20,
+  "total_length_min": 35,
+  "max_charge": 4.0,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "A smartphone and a primary email account you want to secure",
+  "learning_style": "Security walkthrough + Step-by-step setup",
+  "instructor_bio": "Rachel Tobac is a world-renowned 'Ethical Hacker' and CEO of Redpoint Cybersecurity, specializing in social engineering and identity defense.",
+
+  "why_this_fits": "High peace-of-mind ROI. These small structural changes make it nearly impossible for hackers to breach your accounts via standard phishing."
+  },
+
+  {
+  "id": 28,
+  "teacher": "Pawan Kumar",
+  "subject": "Flutter - UI Mastery with Widgets & State",
+  "description": "Everything in Flutter is a widget. This session teaches you how to compose complex UIs using Rows, Columns, and Containers, and introduces 'Stateless' vs 'Stateful' widgets for interactive app behavior.",
+  "rate": 0.22,
+  "rating": 4.93,
+  "students": 18500,
+  "avatar": "PK",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/pTJJsmejUOQ",
+  "videoUrl": "/videos/flutter-ui-widgets.mp4",
+
+  "tags": ["mobile-development", "flutter", "dart", "ui-design"],
+  "level": "beginner",
+
+  "outcomes": [
+    "Build a multi-screen app using Flutter's 'Material' design library",
+    "Understand the 'Widget Tree' and how Flutter renders UI components",
+    "Manage app state using basic 'setState' for real-time updates"
+  ],
+
+  "recommended_min": 20,
+  "recommended_max": 35,
+  "total_length_min": 180,
+  "max_charge": 7.7,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Jan 2026",
+  "prerequisites": "Basic understanding of Object-Oriented Programming (OOP)",
+  "learning_style": "Live coding + Visual hierarchy breakdown",
+  "instructor_bio": "Pawan Kumar is a Google Developer Expert for Flutter and a prolific open-source contributor in the mobile dev community.",
+
+  "why_this_fits": "Perfect for visual learners. You'll move from a blank screen to a polished, interactive mobile UI in under 30 minutes."
+  },
+
+  {
+  "id": 29,
+  "teacher": "Abhishek Kar",
+  "subject": "Tableau - Storytelling with Interactive Dashboards",
+  "description": "Stop presenting boring tables. Learn how to transform messy Excel data into high-impact, interactive dashboards that reveal hidden trends and allow stakeholders to 'drill down' into the insights themselves.",
+  "rate": 0.26,
+  "rating": 4.94,
+  "students": 12800,
+  "avatar": "AK",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/fHoZp9Y6lT0",
+  "videoUrl": "/videos/tableau-visualization-mastery.mp4",
+
+  "tags": ["data-visualization", "tableau", "business-intelligence", "analytics"],
+  "level": "beginner-intermediate",
+
+  "outcomes": [
+    "Connect Tableau to multiple data sources and create 'Joins' and 'Blends'",
+    "Build 'Calculated Fields' to create custom metrics for your business",
+    "Design a 'C-Suite' dashboard with interactive filters and tooltips"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 25,
+  "total_length_min": 58,
+  "max_charge": 6.5,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "Basic understanding of data rows and columns (Excel experience is a plus)",
+  "learning_style": "Drag-and-drop walkthrough + Design theory",
+  "instructor_bio": "Abhishek Kar is a Business Analytics consultant who specializes in helping companies make data-driven decisions through visual storytelling.",
+
+  "why_this_fits": "High impact. You'll move from 'raw numbers' to a 'executive-ready dashboard' in a single 20-minute session."
+  },
+
+  {
+  "id": 30,
+  "teacher": "Code Monkey",
+  "subject": "Unity - Character Controller & Physics Foundations",
+  "description": "Stop struggling with 'jittery' movement. Learn how to build a professional-grade 3D character controller from scratch using Unity's Physics engine and C# scripting for smooth, responsive player input.",
+  "rate": 0.28,
+  "rating": 4.97,
+  "students": 28500,
+  "avatar": "CM",
+  "verified": true,
+
+  "youtubeEmbedUrl": "https://www.youtube.com/embed/fD_HoPaK8vI",
+  "videoUrl": "/videos/unity-character-controller.mp4",
+
+  "tags": ["game-dev", "unity", "csharp", "physics", "indie-dev"],
+  "level": "intermediate",
+
+  "outcomes": [
+    "Implement smooth movement using 'Rigidbody' and 'Input System'",
+    "Script a 'Grounded' check to handle jumping and falling logic",
+    "Optimize physics calculations to maintain a consistent 60 FPS"
+  ],
+
+  "recommended_min": 15,
+  "recommended_max": 30,
+  "total_length_min": 75,
+  "max_charge": 8.4,
+
+  "recorded": true,
+  "language": "English",
+  "last_updated": "Feb 2026",
+  "prerequisites": "Basic C# knowledge and Unity Hub installed",
+  "learning_style": "Live coding + Component-based architecture",
+  "instructor_bio": "Code Monkey is a professional indie game developer with several published Steam titles and a passion for teaching clean, decoupled code.",
+
+  "why_this_fits": "Solves the most common hurdle for new game devs. You'll move from a static cube to a moving, jumping character in one focused session."
   }
 ]

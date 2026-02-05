@@ -7,6 +7,9 @@ import {
   FileText,
   Sparkles,
   X,
+  MessageCircle,
+  ThumbsUp,
+  User,
 } from 'lucide-react';
 
 import { getUserWallet, chargeSession } from '../utils/wallet';
@@ -55,6 +58,50 @@ export default function RecordedSession({
   const [freeSecondsWatched, setFreeSecondsWatched] = useState(0);
   const [freeCountdown, setFreeCountdown] = useState(30);
   const lastVideoTimeRef = useRef(0);
+
+  // Community comments (mock data)
+  const [comments] = useState([
+    {
+      id: 1,
+      user: "Sarah Chen",
+      avatar: "SC",
+      comment: "Excellent explanation! The practical examples really helped me understand the concepts better. Definitely worth the investment.",
+      likes: 24,
+      time: "2 days ago"
+    },
+    {
+      id: 2,
+      user: "Michael Torres",
+      avatar: "MT",
+      comment: "Great session overall. The pacing was perfect for me, finished it in about 15 minutes and felt like I learned a lot.",
+      likes: 18,
+      time: "5 days ago"
+    },
+    {
+      id: 3,
+      user: "Emily Park",
+      avatar: "EP",
+      comment: "The instructor is very clear and engaging. I appreciate the step-by-step breakdown. Highly recommend!",
+      likes: 31,
+      time: "1 week ago"
+    },
+    {
+      id: 4,
+      user: "David Kim",
+      avatar: "DK",
+      comment: "Good content but I wished there were more advanced topics covered. Still a solid foundation though!",
+      likes: 12,
+      time: "1 week ago"
+    },
+    {
+      id: 5,
+      user: "Jessica Wu",
+      avatar: "JW",
+      comment: "This helped me so much! I was struggling with this topic and now it all makes sense. Thank you!",
+      likes: 27,
+      time: "2 weeks ago"
+    }
+  ]);
 
   /* ---------------- CONFIG ---------------- */
   const FREE_PREVIEW_SECONDS = 30;
@@ -415,7 +462,7 @@ export default function RecordedSession({
                 </span>
               </div>
               <div className="flex items-center space-x-2">
-                <Clock className="text-green-400" size={20} />
+                <Clock className="text-green-400" size={20} /> 
                 <span className="text-2xl font-bold text-green-400">
                   {freeCountdown}s
                 </span>
@@ -440,6 +487,67 @@ export default function RecordedSession({
               {session.recommended_max} minutes.
             </p>
           </div>
+
+          {/* COMMUNITY FORUM */}
+          <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+            <div className="flex items-center space-x-3 mb-5">
+              <MessageCircle className="text-blue-400" size={24} />
+              <h3 className="text-xl font-semibold">Community Discussion</h3>
+            </div>
+
+            <div className="space-y-4">
+              {comments.map((comment) => (
+                <div
+                  key={comment.id}
+                  className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/50 hover:border-gray-600 transition-colors"
+                >
+                  <div className="flex items-start space-x-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-bold">{comment.avatar}</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <div>
+                          <p className="font-semibold text-sm">{comment.user}</p>
+                          <p className="text-xs text-gray-500">{comment.time}</p>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-300 leading-relaxed mb-3">
+                        {comment.comment}
+                      </p>
+                      <div className="flex items-center space-x-2">
+                        <button className="flex items-center space-x-1 text-xs text-gray-400 hover:text-blue-400 transition-colors">
+                          <ThumbsUp size={14} />
+                          <span>{comment.likes}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Add Comment Section */}
+            <div className="mt-6 pt-6 border-t border-gray-700">
+              <div className="flex items-start space-x-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center flex-shrink-0">
+                  <User size={20} />
+                </div>
+                <div className="flex-1">
+                  <textarea
+                    placeholder="Share your thoughts about this session..."
+                    className="w-full bg-gray-900/50 border border-gray-700 rounded-xl p-3 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none resize-none"
+                    rows={3}
+                  />
+                  <div className="flex justify-end mt-2">
+                    <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
+                      Post Comment
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* SIDEBAR */}
@@ -447,19 +555,19 @@ export default function RecordedSession({
           {/* METRICS */}
           <div className="bg-gray-800 p-5 rounded-2xl space-y-3">
             <div className="flex justify-between">
-              <Clock />
+              <Clock /> Duration
               <span>{formatTime(seconds)}</span>
             </div>
             <div className="flex justify-between">
-              <DollarSign />
+              <DollarSign /> Cost
               <span>${cost.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
-              <TrendingUp />
+              <TrendingUp /> Trend
               <span>{valueScore}%</span>
             </div>
             <div className="flex justify-between">
-              <Activity />
+              <Activity /> Activity
               <span>{engagement}%</span>
             </div>
             <div className="text-sm text-gray-400">

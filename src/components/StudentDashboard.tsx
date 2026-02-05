@@ -197,58 +197,152 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
 
         {/* TOP GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          {/* SCORE CARD */}
-          <div className="lg:col-span-2 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-3xl shadow-2xl p-8 text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24" />
+          {/* WALLET CARD */}
+          <div className="lg:col-span-2 bg-white/60 backdrop-blur-xl rounded-3xl border border-white/60 shadow-2xl p-8">
+            <div className="mb-6">
+              <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
+                <DollarSign className="w-8 h-8 text-blue-500" />
+                Your Wallet
+              </h2>
+              <p className="text-gray-600">Manage your balance and transactions</p>
+            </div>
 
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <p className="text-blue-100 text-sm mb-2">
-                    Learning Efficiency Score
-                  </p>
-                  <h2 className="text-6xl font-bold mb-2">
-                    {efficiencyScore}
-                  </h2>
-                  <div className="flex items-center space-x-2">
-                    <Shield className="w-5 h-5 text-yellow-300" />
-                    <span className="text-xl font-semibold text-yellow-300">
-                      {level} Learner
-                    </span>
+            {/* Balance Display */}
+            <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-8 mb-6 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12" />
+              
+              <div className="relative z-10">
+                <p className="text-blue-100 text-sm mb-2">Total Balance</p>
+                <p className="text-5xl font-bold mb-2">
+                  {loadingBalance ? "Loading..." : `$${balance.toFixed(2)}`}
+                </p>
+                <p className="text-blue-100 text-sm">USDC</p>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-purple-500" />
+                Quick Actions
+              </h3>
+              <div className="grid grid-cols-3 gap-3">
+                <button
+                  onClick={() => openModal("deposit")}
+                  className="py-4 bg-green-500 hover:bg-green-600 text-white rounded-xl font-medium text-sm transition-all flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                >
+                  <Plus className="w-6 h-6" />
+                  Add Funds
+                </button>
+                <button
+                  onClick={() => openModal("withdraw")}
+                  className="py-4 bg-purple-500 hover:bg-purple-600 text-white rounded-xl font-medium text-sm transition-all flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                >
+                  <Minus className="w-6 h-6" />
+                  Withdraw
+                </button>
+                <button
+                  onClick={() => openModal("spend")}
+                  className="py-4 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium text-sm transition-all flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                >
+                  <ShoppingCart className="w-6 h-6" />
+                  Spend
+                </button>
+              </div>
+            </div>
+
+            {/* Transaction History */}
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-blue-500" />
+                Recent Transactions
+              </h3>
+              <div className="space-y-3 max-h-80 overflow-y-auto">
+                {transactions.slice(0, 6).map((tx) => (
+                  <div key={tx.id} className="flex justify-between items-start p-4 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-start gap-3">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                        tx.type === "DEPOSIT" || tx.type === "EARN" 
+                          ? "bg-green-100" 
+                          : "bg-red-100"
+                      }`}>
+                        {tx.type === "DEPOSIT" || tx.type === "EARN" ? (
+                          <Plus className="w-5 h-5 text-green-600" />
+                        ) : (
+                          <Minus className="w-5 h-5 text-red-600" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-800">{tx.type}</p>
+                        <p className="text-xs text-gray-500">{new Date(tx.date).toLocaleDateString()}</p>
+                        {tx.details && <p className="text-xs text-gray-400 italic mt-1">{tx.details}</p>}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className={`font-bold text-lg ${tx.type === "DEPOSIT" || tx.type === "EARN" ? "text-green-600" : "text-red-600"}`}>
+                        {tx.type === "DEPOSIT" || tx.type === "EARN" ? "+" : "-"}${tx.amount.toFixed(2)}
+                      </p>
+                      {tx.status === "PENDING" && (
+                        <p className="text-blue-500 text-xs animate-pulse mt-1">Verifying...</p>
+                      )}
+                      {tx.status === "COMPLETED" && (
+                        <p className="text-green-500 text-xs mt-1">✓ Done</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-
-                <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <Trophy className="w-12 h-12 text-yellow-300" />
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-blue-100">Progress to Diamond</span>
-                  <span className="text-white font-semibold">
-                    {nextLevelAt - efficiencyScore} points to go
-                  </span>
-                </div>
-                <div className="h-3 bg-white/20 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-yellow-300 to-yellow-400 transition-all"
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 mt-6">
-                <StatCard icon={<TrendingUp />} value="15" label="Sessions" />
-                <StatCard icon={<Clock />} value="8.2h" label="Total Time" />
-                <StatCard icon={<Star />} value="4.9" label="Avg Rating" />
+                ))}
+                {transactions.length === 0 && (
+                  <div className="text-center py-12">
+                    <DollarSign className="w-16 h-16 text-gray-300 mx-auto mb-3" />
+                    <p className="text-gray-400">No transactions yet</p>
+                    <p className="text-sm text-gray-400">Start by adding funds to your wallet</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* SIDE COLUMN */}
           <div className="space-y-6">
+            {/* STATS CARD */}
+            <div className="bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-2xl shadow-xl p-6 text-white">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-blue-100 text-xs mb-1">Learning Score</p>
+                  <h3 className="text-4xl font-bold">{efficiencyScore}</h3>
+                </div>
+                <Trophy className="w-12 h-12 text-yellow-300" />
+              </div>
+              <div className="flex items-center gap-2 mb-4">
+                <Shield className="w-4 h-4 text-yellow-300" />
+                <span className="text-sm font-semibold text-yellow-300">{level} Learner</span>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" />
+                    <span>Sessions</span>
+                  </div>
+                  <span className="font-bold">15</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    <span>Total Time</span>
+                  </div>
+                  <span className="font-bold">8.2h</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <Star className="w-4 h-4" />
+                    <span>Avg Rating</span>
+                  </div>
+                  <span className="font-bold">4.9</span>
+                </div>
+              </div>
+            </div>
+
             {/* BENEFITS */}
             <div className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/60 shadow-lg p-6">
               <h3 className="font-bold text-gray-800 mb-4 flex items-center space-x-2">
@@ -280,76 +374,6 @@ export default function StudentDashboard({ onNavigate }: StudentDashboardProps) 
                 desc="Visible to teachers"
                 bg="bg-yellow-50"
               />
-            </div>
-
-            {/* WALLET */}
-            <div className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/60 shadow-lg p-6">
-              <h3 className="font-bold text-gray-800 mb-4 flex items-center space-x-2">
-                <DollarSign className="w-5 h-5 text-blue-500" />
-                <span>Wallet</span>
-              </h3>
-
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 mb-4 text-white">
-                <p className="text-xs text-blue-100 mb-1">Total Balance</p>
-                <p className="text-3xl font-bold">
-                  {loadingBalance ? "Loading..." : `$${balance.toFixed(2)}`}
-                </p>
-                <p className="text-xs text-blue-100 mt-1">USDC</p>
-              </div>
-
-              <div className="flex gap-2 mb-4">
-                <button
-                  onClick={() => openModal("deposit")}
-                  className="flex-1 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium text-xs transition-colors flex items-center justify-center gap-1"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add
-                </button>
-                <button
-                  onClick={() => openModal("withdraw")}
-                  className="flex-1 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium text-xs transition-colors flex items-center justify-center gap-1"
-                >
-                  <Minus className="w-4 h-4" />
-                  Withdraw
-                </button>
-                <button
-                  onClick={() => openModal("spend")}
-                  className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium text-xs transition-colors flex items-center justify-center gap-1"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  Spend
-                </button>
-              </div>
-
-              {/* Transaction History */}
-              <div className="mt-4">
-                <p className="text-xs font-semibold text-gray-600 mb-2">Recent Transactions</p>
-                <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {transactions.slice(0, 5).map((tx) => (
-                    <div key={tx.id} className="flex justify-between items-start text-xs p-2 bg-gray-50 rounded-lg">
-                      <div>
-                        <p className="font-semibold text-gray-800">{tx.type}</p>
-                        <p className="text-gray-500">{new Date(tx.date).toLocaleDateString()}</p>
-                        {tx.details && <p className="text-gray-400 italic">{tx.details}</p>}
-                      </div>
-                      <div className="text-right">
-                        <p className={`font-bold ${tx.type === "DEPOSIT" ? "text-green-600" : "text-red-600"}`}>
-                          {tx.type === "DEPOSIT" ? "+" : "-"}${tx.amount.toFixed(2)}
-                        </p>
-                        {tx.status === "PENDING" && (
-                          <p className="text-blue-500 text-xs animate-pulse">Verifying...</p>
-                        )}
-                        {tx.status === "COMPLETED" && (
-                          <p className="text-green-500 text-xs">✓ Done</p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                  {transactions.length === 0 && (
-                    <p className="text-xs text-gray-400 text-center py-2">No transactions yet</p>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
         </div>
